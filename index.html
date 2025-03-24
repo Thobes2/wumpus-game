@@ -144,7 +144,7 @@
 function typeWriter(text, i, callback) {
   if (i < text.length) {
     document.getElementById("game").innerText = text.substring(0, i + 1);
-    setTimeout(() => typeWriter(text, i + 1, callback), 40); // speed (ms per character)
+    setTimeout(() => typeWriter(text, i + 1, callback), 70); // speed (ms per character)
   } else if (typeof callback === 'function') {
     callback();
   }
