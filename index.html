@@ -42,13 +42,15 @@
   <p>If you move into the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you win. You can smell the Wumpus if it’s nearby.</p>
   <p><em>Enter a room number, then click "Go" to move or "Shoot" to fire an arrow.</em></p>
 
+  <pre id="game"></pre>
+
+</div>
   <input type="text" id="input" placeholder="Enter room number..." />
   <button onclick="makeMove()">Go</button>
   <button onclick="shootArrow()">Shoot</button>
   <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
-
-  <pre id="game"></pre>
-
+</div>
+  
   <script>
     const map = {
       1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
