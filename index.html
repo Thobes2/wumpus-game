@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hunt the Wumpus</title>
+</head>
+<body>
+  <h1>Hunt the Wumpus</h1>
+  <pre id="game"></pre>
+  <input type="text" id="input" placeholder="Enter move..." />
+  <button onclick="makeMove()">Go</button>
+
+  <script>
+    const map = {
+      1: [2, 5, 8],
+      2: [1, 3, 10],
+      3: [2, 4, 12],
+      4: [3, 5, 14],
+      5: [1, 4, 6],
+      6: [5, 7, 15],
+      7: [6, 8, 17],
+      8: [1, 7, 9],
+      9: [8, 10, 18],
+      10: [2, 9, 11],
+      11: [10, 12, 19],
+      12: [3, 11, 13],
+      13: [12, 14, 20],
+      14: [4, 13, 15],
+      15: [6, 14, 16],
+      16: [15, 17, 20],
+      17: [7, 16, 18],
+      18: [9, 17, 19],
+      19: [11, 18, 20],
+      20: [13, 16, 19]
+    };
+
+    let player = 1;
+    let wumpus = Math.floor(Math.random() * 20) + 1;
+
+    function describeRoom() {
+      const output = [`You are in room ${player}.`, `Tunnels lead to ${map[player].join(', ')}.`];
+      if (map[player].includes(wumpus)) output.push("You smell something terrible nearby...");
+      document.getElementById("game").innerText = output.join('\n');
+    }
+
+    function makeMove() {
+      const move = parseInt(document.getElementById("input").value);
+      if (map[player].includes(move)) {
+        player = move;
+        if (player === wumpus) {
+          document.getElementById("game").innerText = "You entered the Wumpus's room... You were eaten!";
+        } else {
+          describeRoom();
+        }
+      } else {
+        document.getElementById("game").innerText = "You can't go there!";
+      }
+      document.getElementById("input").value = '';
+    }
+
+    describeRoom();
+  </script>
+</body>
+</html>
