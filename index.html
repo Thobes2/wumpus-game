@@ -23,6 +23,7 @@
       border: 1px solid #ccc;
       padding: 1em;
       margin-top: 1em;
+      min-height: 200px;
     }
     input, button {
       font-size: 1em;
@@ -71,10 +72,8 @@
       if (map[player].includes(wumpus)) {
         output.push("A foul stench creeps through the stone... the Wumpus is near.");
       }
-        document.getElementById("game").innerText =
-        "The arrow clatters in the dark... nothing stirs. The Wumpus lives.\n";
-
-setTimeout(describeRoom, 1000); // Show room info after a short pause    }
+      document.getElementById("game").innerText = output.join('\n');
+    }
 
     function makeMove() {
       const inputValue = document.getElementById("input").value.trim();
@@ -122,7 +121,16 @@ setTimeout(describeRoom, 1000); // Show room info after a short pause    }
           document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
           document.getElementById("restart").style.display = 'inline';
         } else {
-          document.getElementById("game").innerText = "The arrow clatters in the dark... nothing stirs. The Wumpus lives.";
+          const output = [
+            "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
+            "",
+            `You are in room ${player}.`,
+            `Tunnels lead to ${map[player].join(', ')}.`
+          ];
+          if (map[player].includes(wumpus)) {
+            output.push("A foul stench creeps through the stone... the Wumpus is near.");
+          }
+          document.getElementById("game").innerText = output.join('\n');
         }
       } else {
         const output = [
@@ -142,23 +150,20 @@ setTimeout(describeRoom, 1000); // Show room info after a short pause    }
       describeRoom();
     }
 
-    // Intro text
-function typeWriter(text, i, callback) {
-  if (i < text.length) {
-    document.getElementById("game").innerText = text.substring(0, i + 1);
-    setTimeout(() => typeWriter(text, i + 1, callback), 70); // speed (ms per character)
-  } else if (typeof callback === 'function') {
-    callback();
-  }
-}
+    // Typewriter intro effect
+    function typeWriter(text, i, callback) {
+      if (i < text.length) {
+        document.getElementById("game").innerText = text.substring(0, i + 1);
+        setTimeout(() => typeWriter(text, i + 1, callback), 40);
+      } else if (typeof callback === 'function') {
+        callback();
+      }
+    }
 
-// Start the game with typewriter intro
-const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n";
-
-typeWriter(introText, 0, () => {
-  setTimeout(describeRoom, 500); // brief pause after text finishes
-});
-
+    const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n\n";
+    typeWriter(introText, 0, () => {
+      setTimeout(describeRoom, 500);
+    });
   </script>
 </body>
 </html>
