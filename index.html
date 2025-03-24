@@ -237,7 +237,7 @@
   typeWriter(introText, 0, () => {
     const prompt = document.createElement("p");
     prompt.id = "continue-prompt";
-    prompt.innerHTML = '[Press Enter to continue<span class="blinking-cursor">_</span>]';
+    prompt.innerHTML = 'Press Enter to continue<span class="blinking-cursor">_</span>';
     document.getElementById("game").appendChild(prompt);
     document.addEventListener("keydown", waitForEnter);
   });
