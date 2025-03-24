@@ -94,6 +94,11 @@
   <pre id="torch" aria-hidden="true"></pre>
 </div>
 
+  <audio id="bg-music" loop>
+  <source src="https://soundimage.org/wp-content/uploads/2022/11/Ancient-Mysteries_Looping.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
 
    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious. </p>
   
@@ -226,15 +231,14 @@
     }
   }
 
-  function startGame() {
+ function startGame() {
   document.getElementById("start-screen").style.display = "none";
+  document.getElementById("bg-music").play(); // 👈 Play music
   typeWriter(introText, 0, () => {
-    // After typewriter finishes, show prompt and wait for Enter
     const prompt = document.createElement("p");
     prompt.id = "continue-prompt";
-    prompt.innerHTML = 'Press Enter to continue<span class="blinking-cursor">_</span>';
+    prompt.innerHTML = '[Press Enter to continue<span class="blinking-cursor">_</span>]';
     document.getElementById("game").appendChild(prompt);
-
     document.addEventListener("keydown", waitForEnter);
   });
 }
