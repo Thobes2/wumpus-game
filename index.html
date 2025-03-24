@@ -49,10 +49,30 @@
   50% { opacity: 0; }
 }
 
+    #title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+#torch {
+  font-family: monospace;
+  color: orange;
+  white-space: pre;
+  line-height: 1;
+  font-size: 0.9em;
+}
+
+
   </style>
 </head>
 <body>
+  <div id="title-container">
   <h1>Hunt the Wumpus</h1>
+  <pre id="torch" aria-hidden="true"></pre>
+  </div>
 
    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious. </p>
   
@@ -206,7 +226,26 @@
     describeRoom();
   }
 }
+const torchFrames = [
+`  )
+ (
+  )
+🔥`,
+` (
+  )
+ (
+🔥`,
+`  )
+ (
+  )
+🔥`
+];
 
+let currentTorchFrame = 0;
+setInterval(() => {
+  document.getElementById("torch").innerText = torchFrames[currentTorchFrame];
+  currentTorchFrame = (currentTorchFrame + 1) % torchFrames.length;
+}, 300);
 
   const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n\n";
 </script>
