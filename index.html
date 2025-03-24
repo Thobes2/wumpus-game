@@ -64,15 +64,36 @@
   line-height: 1;
   font-size: 0.9em;
 }
+#title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1em;
+    margin-bottom: 1em;
+  }
 
+  #title-row h1 {
+    margin: 0;
+    font-family: 'UnifrakturCook', cursive;
+    font-size: 3em;
+  }
+
+  #torch {
+    font-family: monospace;
+    color: orange;
+    white-space: pre;
+    line-height: 1;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+  }
 
   </style>
 </head>
 <body>
-  <div id="title-container">
+  <div id="title-row">
   <h1>Hunt the Wumpus</h1>
   <pre id="torch" aria-hidden="true"></pre>
-  </div>
+</div>
+
 
    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious. </p>
   
