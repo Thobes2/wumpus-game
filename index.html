@@ -71,8 +71,10 @@
       if (map[player].includes(wumpus)) {
         output.push("A foul stench creeps through the stone... the Wumpus is near.");
       }
-      document.getElementById("game").innerText = output.join('\n');
-    }
+        document.getElementById("game").innerText =
+        "The arrow clatters in the dark... nothing stirs. The Wumpus lives.\n";
+
+setTimeout(describeRoom, 1000); // Show room info after a short pause    }
 
     function makeMove() {
       const inputValue = document.getElementById("input").value.trim();
