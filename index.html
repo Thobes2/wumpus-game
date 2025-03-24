@@ -30,6 +30,16 @@
       padding: 0.4em;
       margin-top: 0.5em;
     }
+    #start-screen {
+  text-align: center;
+  margin-top: 100px;
+}
+#start-screen button {
+  font-size: 1.2em;
+  padding: 0.6em 1.2em;
+  cursor: pointer;
+}
+
   </style>
 </head>
 <body>
@@ -44,9 +54,11 @@
   </ul>
   <p>If you enter the Wumpus’s chamber, you get eaten. If you shoot into the Wumpus’s chamber, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late!</p>
   <p><em>Enter a chamber number, then click "Go" or "Shoot" to fire an arrow.</em></p>
+  
 <div id="start-screen">
   <button onclick="startGame()">Play</button>
 </div>
+
   
   <pre id="game"></pre>
 
@@ -58,122 +70,121 @@
   </div>
 
   <script>
-    const map = {
-      1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
-      6: [5, 7, 15],  7: [6, 8, 17],  8: [1, 7, 9],   9: [8, 10, 18], 10: [2, 9, 11],
-      11: [10, 12, 19], 12: [3, 11, 13], 13: [12, 14, 20], 14: [4, 13, 15],
-      15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 16, 18], 18: [9, 17, 19],
-      19: [11, 18, 20], 20: [13, 16, 19]
-    };
+  const map = {
+    1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
+    6: [5, 7, 15],  7: [6, 8, 17],  8: [1, 7, 9],   9: [8, 10, 18], 10: [2, 9, 11],
+    11: [10, 12, 19], 12: [3, 11, 13], 13: [12, 14, 20], 14: [4, 13, 15],
+    15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 16, 18], 18: [9, 17, 19],
+    19: [11, 18, 20], 20: [13, 16, 19]
+  };
 
-    let player = 1;
-    let wumpus = Math.floor(Math.random() * 20) + 1;
+  let player = 1;
+  let wumpus = Math.floor(Math.random() * 20) + 1;
 
-    function describeRoom() {
-      const output = [
-        `You are in room ${player}.`,
-        `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
-      ];
-      if (map[player].includes(wumpus)) {
-        output.push("A foul stench creeps through the stone... the Wumpus is near.");
+  function describeRoom() {
+    const output = [
+      `You are in room ${player}.`,
+      `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
+    ];
+    if (map[player].includes(wumpus)) {
+      output.push("A foul stench creeps through the stone... the Wumpus is near.");
+    }
+    document.getElementById("game").innerText = output.join('\n');
+  }
+
+  function makeMove() {
+    const inputValue = document.getElementById("input").value.trim();
+    const move = parseInt(inputValue);
+    const validMoves = map[player];
+
+    if (isNaN(move)) {
+      document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
+      document.getElementById("input").value = '';
+      return;
+    }
+
+    if (validMoves.includes(move)) {
+      player = move;
+      if (player === wumpus) {
+        document.getElementById("game").innerText = "You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!";
+        document.getElementById("restart").style.display = 'inline';
+      } else {
+        describeRoom();
       }
+    } else {
+      const output = [
+        `A stone wall blocks your path. You can't go to room ${move}.`,
+        `You remain in room ${player}.`,
+        `Tunnels lead to: ${validMoves.join(', ')}.`
+      ];
       document.getElementById("game").innerText = output.join('\n');
     }
 
-    function makeMove() {
-      const inputValue = document.getElementById("input").value.trim();
-      const move = parseInt(inputValue);
-      const validMoves = map[player];
+    document.getElementById("input").value = '';
+  }
 
-      if (isNaN(move)) {
-        document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
-        document.getElementById("input").value = '';
-        return;
-      }
+  function shootArrow() {
+    const inputValue = document.getElementById("input").value.trim();
+    const targetRoom = parseInt(inputValue);
 
-      if (validMoves.includes(move)) {
-        player = move;
-        if (player === wumpus) {
-          document.getElementById("game").innerText = "You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!";
-          document.getElementById("restart").style.display = 'inline';
-        } else {
-          describeRoom();
-        }
+    if (isNaN(targetRoom)) {
+      document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
+      document.getElementById("input").value = '';
+      return;
+    }
+
+    if (map[player].includes(targetRoom)) {
+      if (targetRoom === wumpus) {
+        document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
+        document.getElementById("restart").style.display = 'inline';
       } else {
         const output = [
-          `A stone wall blocks your path. You can't go to room ${move}.`,
-          `You remain in room ${player}.`,
-          `Tunnels lead to: ${validMoves.join(', ')}.`
+          "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
+          "",
+          `You are in room ${player}.`,
+          `Tunnels lead to ${map[player].join(', ')}.`
         ];
-        document.getElementById("game").innerText = output.join('\n');
-      }
-
-      document.getElementById("input").value = '';
-    }
-
-    function shootArrow() {
-      const inputValue = document.getElementById("input").value.trim();
-      const targetRoom = parseInt(inputValue);
-
-      if (isNaN(targetRoom)) {
-        document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
-        document.getElementById("input").value = '';
-        return;
-      }
-
-      if (map[player].includes(targetRoom)) {
-        if (targetRoom === wumpus) {
-          document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
-          document.getElementById("restart").style.display = 'inline';
-        } else {
-          const output = [
-            "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
-            "",
-            `You are in room ${player}.`,
-            `Tunnels lead to ${map[player].join(', ')}.`
-          ];
-          if (map[player].includes(wumpus)) {
-            output.push("A foul stench creeps through the stone... the Wumpus is near.");
-          }
-          document.getElementById("game").innerText = output.join('\n');
+        if (map[player].includes(wumpus)) {
+          output.push("A foul stench creeps through the stone... the Wumpus is near.");
         }
-      } else {
-        const output = [
-          `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
-          `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
-        ];
         document.getElementById("game").innerText = output.join('\n');
       }
-
-      document.getElementById("input").value = '';
+    } else {
+      const output = [
+        `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
+        `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
+      ];
+      document.getElementById("game").innerText = output.join('\n');
     }
 
-    function restartGame() {
-      player = 1;
-      wumpus = Math.floor(Math.random() * 20) + 1;
-      document.getElementById("restart").style.display = 'none';
-      describeRoom();
-    }
+    document.getElementById("input").value = '';
+  }
 
-    // Typewriter intro effect
-    function typeWriter(text, i, callback) {
-      if (i < text.length) {
-        document.getElementById("game").innerText = text.substring(0, i + 1);
-        setTimeout(() => typeWriter(text, i + 1, callback), 40);
-      } else if (typeof callback === 'function') {
-        callback();
-      }
-    }
+  function restartGame() {
+    player = 1;
+    wumpus = Math.floor(Math.random() * 20) + 1;
+    document.getElementById("restart").style.display = 'none';
+    describeRoom();
+  }
 
-function startGame() {
-  document.getElementById("start-screen").style.display = "none";
-  typeWriter(introText, 0, () => {
-    setTimeout(describeRoom, 500);
-  });
-}
-    
-    const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n\n";
+  function typeWriter(text, i, callback) {
+    if (i < text.length) {
+      document.getElementById("game").innerText = text.substring(0, i + 1);
+      setTimeout(() => typeWriter(text, i + 1, callback), 40);
+    } else if (typeof callback === 'function') {
+      callback();
+    }
+  }
+
+  function startGame() {
+    document.getElementById("start-screen").style.display = "none";
+    typeWriter(introText, 0, () => {
+      setTimeout(describeRoom, 500);
     });
-  </script>
+  }
+
+  const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n\n";
+</script>
+
 </body>
 </html>
