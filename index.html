@@ -3,10 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Hunt the Wumpus</title>
+
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<style>
+  h1 {
+    font-family: 'UnifrakturCook', cursive;
+    font-size: 3em;
+    margin-bottom: 0.2em;
+  }
+</style>
 </head>
 <body>
-  <h1>Hunt the Wumpus</h1>
-  <pre id="game"></pre>
+<h1>Hunt the Wumpus</h1>
+
+<p><strong>Rules:</strong> You are in a cave of 20 rooms, connected by tunnels. The Wumpus is hiding in one of them. Each turn, you can move to a connected room. If you enter the Wumpus’s room, you get eaten. Try to avoid it!</p>
+<p>You can smell the Wumpus if it’s in a neighboring room.</p>
+<p><em>Type a room number you want to move to and click "Go".</em></p>
+
+<button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
+
+<pre id="game"></pre>
   <input type="text" id="input" placeholder="Enter move..." />
   <button onclick="makeMove()">Go</button>
 
