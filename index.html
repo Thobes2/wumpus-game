@@ -133,19 +133,52 @@
     19: [11, 18, 20], 20: [13, 16, 19]
   };
 
+    const roomAdjectives = [
+  "a narrow stone chamber",
+  "a flooded passageway",
+  "a dome-shaped vaulted with crumbling walls",
+  "a low-ceilinged tunnel",
+  "a chamber etched with forgotten runes",
+  "a cavern that smells of sulfur",
+  "a torchlit hallway with dripping walls",
+  "a room littered with bones",
+  "a vaulted corridor echoing your footsteps",
+  "a room cloaked in eerie silence"
+];
+
+const sensoryHints = [
+  "The air is cold and still.",
+  "You hear distant dripping water.",
+  "The ground crunches under your feet.",
+  "A breeze brushes your cheek.",
+  "You feel eyes watching from the dark.",
+  "A musty odor fills the air.",
+  "You nearly trip over a broken helmet.",
+  "There’s a strange warmth in the stone.",
+  "You taste iron in the air.",
+  "Your torch flickers for a moment."
+];
+    
   let player = 1;
   let wumpus = Math.floor(Math.random() * 20) + 1;
 
-  function describeRoom() {
-    const output = [
-      `You are in room ${player}.`,
-      `Tunnels stretch out toward chambers ${map[player].join(', ')}.`
-    ];
-    if (map[player].includes(wumpus)) {
-      output.push("A foul stench creeps through the stone... the Wumpus is near.");
-    }
-    document.getElementById("game").innerText = output.join('\n');
+function describeRoom() {
+  const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
+  const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
+
+  const output = [
+    `You step into ${flavor}.`,
+    sense,
+    `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
+  ];
+
+  if (map[player].includes(wumpus)) {
+    output.push("A foul stench creeps through the stone... the Wumpus is near.");
   }
+
+  document.getElementById("game").innerText = output.join('\n');
+}
+
 
   function makeMove() {
     const inputValue = document.getElementById("input").value.trim();
