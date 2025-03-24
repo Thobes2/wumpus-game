@@ -118,7 +118,7 @@
   <pre id="game"></pre>
 
   <div style="margin-top: 1em;">
-    <input type="text" id="input" placeholder="Enter chamber number..." />
+    <input type="text" id="input" placeholder="Enter chamber #..." />
     <button onclick="makeMove()">Go</button>
     <button onclick="shootArrow()">Shoot</button>
     <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
@@ -135,28 +135,28 @@
 
     const roomAdjectives = [
   "a narrow stone chamber",
-  "a flooded passageway",
+  "🌊 a flooded passageway",
   "a dome-shaped vaulted with crumbling walls",
   "a low-ceilinged tunnel",
-  "a chamber etched with forgotten runes",
+  "a chamber etched with forgotten runes ᛤ",
   "a cavern that smells of sulfur",
   "a torchlit hallway with dripping walls",
-  "a room littered with bones",
+  "🦴 a room littered with bones",
   "a vaulted corridor echoing your footsteps",
   "a room cloaked in eerie silence"
 ];
 
 const sensoryHints = [
   "The air is cold and still.",
-  "You hear distant dripping water.",
+  "💧 You hear distant dripping water.",
   "The ground crunches under your feet.",
-  "A breeze brushes your cheek.",
-  "You feel eyes watching from the dark.",
+  "💨 A breeze brushes your cheek.",
+  "👁️ You feel eyes watching from the dark.",
   "A musty odor fills the air.",
   "You nearly trip over a broken helmet.",
   "There’s a strange warmth in the stone.",
   "You taste iron in the air.",
-  "Your torch flickers for a moment."
+  "🔥 Your torch flickers for a moment."
 ];
     
   let player = 1;
