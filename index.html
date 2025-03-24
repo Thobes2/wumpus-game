@@ -60,19 +60,29 @@
     }
 
     function makeMove() {
-      const move = parseInt(document.getElementById("input").value);
-      if (map[player].includes(move)) {
-        player = move;
-        if (player === wumpus) {
-          document.getElementById("game").innerText = "You entered the Wumpus's room... You were eaten!";
-        } else {
-          describeRoom();
-        }
-      } else {
-        document.getElementById("game").innerText = "You can't go there!";
-      }
-      document.getElementById("input").value = '';
+  const move = parseInt(document.getElementById("input").value);
+  const validMoves = map[player];
+
+  if (validMoves.includes(move)) {
+    player = move;
+    if (player === wumpus) {
+      document.getElementById("game").innerText = "You entered the Wumpus's room... You were eaten!";
+      document.getElementById("restart").style.display = 'inline';
+    } else {
+      describeRoom();
     }
+  } else {
+    const output = [
+      `You can't go to room ${move}.`,
+      `You are still in room ${player}.`,
+      `Tunnels lead to ${validMoves.join(', ')}.`
+    ];
+    document.getElementById("game").innerText = output.join('\n');
+  }
+
+  document.getElementById("input").value = '';
+}
+
 
     describeRoom();
   </script>
