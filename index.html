@@ -58,8 +58,8 @@
   
   <strong>Rules:</strong> You are in a cave with 20 chambers, connected by tunnels. The Wumpus is hiding in one of the chambers. Each turn, you can either:</p>
   <ul>
-    <li><strong>Go</strong> to a connected room</li>
-    <li><strong>Shoot</strong> an arrow into a connected room</li>
+    <li><strong>Go</strong> to a connected chamber</li>
+    <li><strong>Shoot</strong> an arrow into a connected chamber</li>
   </ul>
   <p>If you enter the Wumpus’s chamber, you get eaten. If you shoot into the Wumpus’s chamber, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late!</p>
   <p><em>Enter a chamber number, then click "Go" or "Shoot" to fire an arrow.</em></p>
@@ -72,7 +72,7 @@
   <pre id="game"></pre>
 
   <div style="margin-top: 1em;">
-    <input type="text" id="input" placeholder="Enter room number..." />
+    <input type="text" id="input" placeholder="Enter chamber number..." />
     <button onclick="makeMove()">Go</button>
     <button onclick="shootArrow()">Shoot</button>
     <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
@@ -93,7 +93,7 @@
   function describeRoom() {
     const output = [
       `You are in room ${player}.`,
-      `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
+      `Tunnels stretch out toward chambers ${map[player].join(', ')}.`
     ];
     if (map[player].includes(wumpus)) {
       output.push("A foul stench creeps through the stone... the Wumpus is near.");
@@ -150,7 +150,7 @@
         const output = [
           "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
           "",
-          `You are in room ${player}.`,
+          `You are in chamber ${player}.`,
           `Tunnels lead to ${map[player].join(', ')}.`
         ];
         if (map[player].includes(wumpus)) {
@@ -160,7 +160,7 @@
       }
     } else {
       const output = [
-        `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
+        `Your shot ricochets off stone. You can't shoot into chamber ${targetRoom}.`,
         `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
       ];
       document.getElementById("game").innerText = output.join('\n');
