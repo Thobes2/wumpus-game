@@ -141,11 +141,22 @@
     }
 
     // Intro text
-    document.getElementById("game").innerText =
-      "You awaken in a cold, dripping cave. A voice echoes in your mind:\n" +
-      "*Hunt the Wumpus... or be hunted.*\n";
+function typeWriter(text, i, callback) {
+  if (i < text.length) {
+    document.getElementById("game").innerText = text.substring(0, i + 1);
+    setTimeout(() => typeWriter(text, i + 1, callback), 40); // speed (ms per character)
+  } else if (typeof callback === 'function') {
+    callback();
+  }
+}
 
-    setTimeout(describeRoom, 2000);
+// Start the game with typewriter intro
+const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n";
+
+typeWriter(introText, 0, () => {
+  setTimeout(describeRoom, 500); // brief pause after text finishes
+});
+
   </script>
 </body>
 </html>
