@@ -40,6 +40,15 @@
   cursor: pointer;
 }
 
+    .blinking-cursor {
+  display: inline-block;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
   </style>
 </head>
 <body>
@@ -177,11 +186,27 @@
   }
 
   function startGame() {
-    document.getElementById("start-screen").style.display = "none";
-    typeWriter(introText, 0, () => {
-      setTimeout(describeRoom, 500);
-    });
+  document.getElementById("start-screen").style.display = "none";
+  typeWriter(introText, 0, () => {
+    // After typewriter finishes, show prompt and wait for Enter
+    const prompt = document.createElement("p");
+    prompt.id = "continue-prompt";
+    prompt.innerHTML = '[Press Enter to continue<span class="blinking-cursor">_</span>]';
+    document.getElementById("game").appendChild(prompt);
+
+    document.addEventListener("keydown", waitForEnter);
+  });
+}
+
+    function waitForEnter(e) {
+  if (e.key === "Enter") {
+    document.removeEventListener("keydown", waitForEnter);
+    const prompt = document.getElementById("continue-prompt");
+    if (prompt) prompt.remove();
+    describeRoom();
   }
+}
+
 
   const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n*Hunt the Wumpus... or be hunted.*\n\n";
 </script>
