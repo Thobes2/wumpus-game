@@ -88,19 +88,22 @@ start-screen button {
 #start-screen button {
   font-family: 'UnifrakturCook', cursive;
   font-size: 1.5em;
-  background-color: #222;
-  color: #ccc;
-  border: 2px solid #555;
-  padding: 0.5em 1em;
+  background-color: #111;     /* very dark background */
+  color: #ccc;                /* light gray text */
+  border: 2px solid #333;     /* dark border */
+  padding: 0.6em 1.2em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 #start-screen button:hover {
-  background-color: #333;
-  color: #fff;
-  border-color: #888;
+  background-color: #222;     /* slightly lighter on hover */
+  color: #fff;                /* bright text on hover */
+  border-color: #666;
 }
+
 
   </style>
 </head>
