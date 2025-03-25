@@ -124,10 +124,10 @@
   
   <pre id="game"></pre>
 
-  <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
+<div id="hud" style="margin-top: 0.5em; font-family: monospace;">
   Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span>
-  </div>
-
+</div>
+  
   <div style="margin-top: 1em;">
     <input type="text" id="input" placeholder="Enter room #..." />
     <button onclick="makeMove()">Go</button>
@@ -225,6 +225,11 @@ function describeRoom() {
     document.getElementById("input").value = '';
   }
 
+    if (validMoves.includes(move)) {
+  player = move;
+  turns++;
+  updateHUD();
+
     turns++;
 updateHUD();
 
@@ -275,14 +280,18 @@ updateHUD();
     document.getElementById("input").value = '';
   }
 
+      arrows--;
+turns++;
+updateHUD(); // ✅ track arrow use and turn count
+
     
 
-  function restartGame() {
-    player = 1;
-    wumpus = Math.floor(Math.random() * 20) + 1;
-    document.getElementById("restart").style.display = 'none';
-    describeRoom();
-  }
+player = 1;
+wumpus = Math.floor(Math.random() * 20) + 1;
+arrows = 3;
+turns = 0;
+updateHUD(); // ✅ reset all values
+
 
   function typeWriter(text, i, callback) {
     if (i < text.length) {
