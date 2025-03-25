@@ -92,6 +92,13 @@
   border-color: #666;
 }
 
+#torch {
+  font-family: monospace;
+  color: darkorange;
+  white-space: pre;
+  font-size: 0.85em;
+  margin-top: 0.5em;
+}
 
   </style>
 </head>
@@ -313,22 +320,45 @@ const torchFrames = [
 `  )
  (
   )
-🔥`,
+  |
+ /|\\
+ / \\`,
+
 ` (
   )
  (
-🔥`,
+  |
+ /|\\
+ / \\`,
+
 `  )
  (
   )
-🔥`
+ \\|/
+  |
+ / \\`,
+
+`  )
+ (
+  )
+  |
+ \\|/
+ / \\`,
+
+`  )
+ (
+  )
+  |
+ /|\\
+ / \\`
 ];
+
 
 let currentTorchFrame = 0;
 setInterval(() => {
   document.getElementById("torch").innerText = torchFrames[currentTorchFrame];
   currentTorchFrame = (currentTorchFrame + 1) % torchFrames.length;
-}, 300);
+}, 300); // Adjust speed here
 </script>
 
 
