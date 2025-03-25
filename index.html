@@ -136,45 +136,39 @@
   </div>
 
   <script>
-  const map = {
-    1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
-    6: [5, 7, 15],  7: [6, 8, 17],  8: [1, 7, 9],   9: [8, 10, 18], 10: [2, 9, 11],
-    11: [10, 12, 19], 12: [3, 11, 13], 13: [12, 14, 20], 14: [4, 13, 15],
-    15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 16, 18], 18: [9, 17, 19],
-    19: [11, 18, 20], 20: [13, 16, 19]
-  };
+const map = {
+  1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
+  6: [5, 7, 15],  7: [6, 8, 17],  8: [1, 7, 9],   9: [8, 10, 18], 10: [2, 9, 11],
+  11: [10, 12, 19], 12: [3, 11, 13], 13: [12, 14, 20], 14: [4, 13, 15],
+  15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 16, 18], 18: [9, 17, 19],
+  19: [11, 18, 20], 20: [13, 16, 19]
+};
 
-    const roomAdjectives = [
-  "a narrow stone room",
-  "🌊 a flooded passageway",
-  "a dome-shaped vaulted with crumbling walls",
-  "a low-ceilinged tunnel",
-  "a room etched with forgotten runes ᛤ",
-  "a cavern that smells of sulfur",
-  "a torchlit hallway with dripping walls",
-  "🦴 a room littered with bones",
-  "a vaulted corridor echoing your footsteps",
-  "a room cloaked in eerie silence"
+const roomAdjectives = [
+  "a narrow stone room", "🌊 a flooded passageway", "a dome-shaped vault with crumbling walls",
+  "a low-ceilinged tunnel", "a room etched with forgotten runes ᛤ", "a cavern that smells of sulfur",
+  "a torchlit hallway with dripping walls", "🦴 a room littered with bones",
+  "a vaulted corridor echoing your footsteps", "a room cloaked in eerie silence"
 ];
 
 const sensoryHints = [
-  "The air is cold and still.",
-  "💧 You hear distant dripping water.",
-  "The ground crunches under your feet.",
-  "💨 A breeze brushes your cheek.",
-  "👁️ You feel eyes watching from the dark.",
-  "A musty odor fills the air.",
-  "You nearly trip over a broken helmet.",
-  "There’s a strange warmth in the stone.",
-  "You taste iron in the air.",
+  "The air is cold and still.", "💧 You hear distant dripping water.", "The ground crunches under your feet.",
+  "💨 A breeze brushes your cheek.", "👁️ You feel eyes watching from the dark.",
+  "A musty odor fills the air.", "You nearly trip over a broken helmet.",
+  "There’s a strange warmth in the stone.", "You taste iron in the air.",
   "🔥 Your torch flickers for a moment."
 ];
-    
-  let player = 1;
-  let wumpus = Math.floor(Math.random() * 20) + 1;
 
-  let arrows = 3;
-  let turns = 0; // Optional: count turns while we're at it
+let player = 1;
+let wumpus = Math.floor(Math.random() * 20) + 1;
+let arrows = 3;
+let turns = 0;
+
+function updateHUD() {
+  document.getElementById("hud-room").innerText = player;
+  document.getElementById("hud-arrows").innerText = arrows;
+  document.getElementById("hud-turns").innerText = turns;
+}
 
 function describeRoom() {
   const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
@@ -193,133 +187,118 @@ function describeRoom() {
   document.getElementById("game").innerText = output.join('\n');
 }
 
+function makeMove() {
+  const inputValue = document.getElementById("input").value.trim();
+  const move = parseInt(inputValue);
+  const validMoves = map[player];
 
-  function makeMove() {
-    const inputValue = document.getElementById("input").value.trim();
-    const move = parseInt(inputValue);
-    const validMoves = map[player];
-    
-    if (isNaN(move)) {
-      document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
-      document.getElementById("input").value = '';
-      return;
-    }
-
-    if (validMoves.includes(move)) {
-      player = move;
-      if (player === wumpus) {
-        document.getElementById("game").innerText = "You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!";
-        document.getElementById("restart").style.display = 'inline';
-      } else {
-        describeRoom();
-      }
-    } else {
-      const output = [
-        `A stone wall blocks your path. You can't go to room ${move}.`,
-        `You remain in room ${player}.`,
-        `Tunnels lead to: ${validMoves.join(', ')}.`
-      ];
-      document.getElementById("game").innerText = output.join('\n');
-    }
-
+  if (isNaN(move)) {
+    document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
     document.getElementById("input").value = '';
+    return;
   }
 
-    if (validMoves.includes(move)) {
-  player = move;
+  if (validMoves.includes(move)) {
+    player = move;
+    turns++;
+    updateHUD();
+    if (player === wumpus) {
+      document.getElementById("game").innerText = "You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!";
+      document.getElementById("restart").style.display = 'inline';
+    } else {
+      describeRoom();
+    }
+  } else {
+    const output = [
+      `A stone wall blocks your path. You can't go to room ${move}.`,
+      `You remain in room ${player}.`,
+      `Tunnels lead to: ${validMoves.join(', ')}.`
+    ];
+    document.getElementById("game").innerText = output.join('\n');
+  }
+
+  document.getElementById("input").value = '';
+}
+
+function shootArrow() {
+  if (arrows <= 0) {
+    document.getElementById("game").innerText = "You have no arrows left. The Wumpus lives... for now.";
+    return;
+  }
+
+  const inputValue = document.getElementById("input").value.trim();
+  const targetRoom = parseInt(inputValue);
+
+  arrows--;
   turns++;
   updateHUD();
 
-    turns++;
-updateHUD();
+  if (isNaN(targetRoom)) {
+    document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
+    document.getElementById("input").value = '';
+    return;
+  }
 
-
-  function shootArrow() {
-    
-    if (arrows <= 0) {
-  document.getElementById("game").innerText = "You have no arrows left. The Wumpus lives... for now.";
-  return;
-}
-
-    const inputValue = document.getElementById("input").value.trim();
-    const targetRoom = parseInt(inputValue);
-
-    arrows--;
-updateHUD();
-
-    if (isNaN(targetRoom)) {
-      document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
-      document.getElementById("input").value = '';
-      return;
-    }
-
-    if (map[player].includes(targetRoom)) {
-      if (targetRoom === wumpus) {
-        document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
-        document.getElementById("restart").style.display = 'inline';
-      } else {
-        const output = [
-          "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
-          "",
-          `You are in room ${player}.`,
-          `Tunnels lead to ${map[player].join(', ')}.`
-        ];
-        if (map[player].includes(wumpus)) {
-          output.push("A foul stench creeps through the stone... the Wumpus is near.");
-        }
-        document.getElementById("game").innerText = output.join('\n');
-      }
+  if (map[player].includes(targetRoom)) {
+    if (targetRoom === wumpus) {
+      document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
+      document.getElementById("restart").style.display = 'inline';
     } else {
       const output = [
-        `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
-        `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
+        "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
+        "",
+        `You are in room ${player}.`,
+        `Tunnels lead to ${map[player].join(', ')}.`
       ];
+      if (map[player].includes(wumpus)) {
+        output.push("A foul stench creeps through the stone... the Wumpus is near.");
+      }
       document.getElementById("game").innerText = output.join('\n');
     }
-
-    document.getElementById("input").value = '';
+  } else {
+    const output = [
+      `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
+      `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
+    ];
+    document.getElementById("game").innerText = output.join('\n');
   }
 
-      arrows--;
-turns++;
-updateHUD(); // ✅ track arrow use and turn count
+  document.getElementById("input").value = '';
+}
 
-    
+function restartGame() {
+  player = 1;
+  wumpus = Math.floor(Math.random() * 20) + 1;
+  arrows = 3;
+  turns = 0;
+  document.getElementById("restart").style.display = 'none';
+  updateHUD();
+  describeRoom();
+}
 
-player = 1;
-wumpus = Math.floor(Math.random() * 20) + 1;
-arrows = 3;
-turns = 0;
-updateHUD(); // ✅ reset all values
-
-
-  function typeWriter(text, i, callback) {
-    if (i < text.length) {
-      document.getElementById("game").innerText = text.substring(0, i + 1);
-      setTimeout(() => typeWriter(text, i + 1, callback), 40);
-    } else if (typeof callback === 'function') {
-      callback();
-    }
+function typeWriter(text, i, callback) {
+  if (i < text.length) {
+    document.getElementById("game").innerText = text.substring(0, i + 1);
+    setTimeout(() => typeWriter(text, i + 1, callback), 40);
+  } else if (typeof callback === 'function') {
+    callback();
   }
+}
 
- function startGame() {
+function startGame() {
   document.getElementById("start-screen").style.display = "none";
-  document.getElementById("bg-music").play(); // 👈 Play music
+  document.getElementById("bg-music").play();
   typeWriter(introText, 0, () => {
     const prompt = document.createElement("p");
     prompt.id = "continue-prompt";
     prompt.innerHTML = 'Press Enter to continue<span class="blinking-cursor">_</span>';
     document.getElementById("game").appendChild(prompt);
     document.addEventListener("keydown", waitForEnter);
+    updateHUD(); // Ensure HUD is shown after typewriter
   });
 }
 
-    arrows = 3;
-turns = 0;
-updateHUD();
-
-
-    function waitForEnter(e) {
+function waitForEnter(e) {
   if (e.key === "Enter") {
     document.removeEventListener("keydown", waitForEnter);
     const prompt = document.getElementById("continue-prompt");
@@ -327,6 +306,9 @@ updateHUD();
     describeRoom();
   }
 }
+
+const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
+
 const torchFrames = [
 `  )
  (
@@ -347,18 +329,8 @@ setInterval(() => {
   document.getElementById("torch").innerText = torchFrames[currentTorchFrame];
   currentTorchFrame = (currentTorchFrame + 1) % torchFrames.length;
 }, 300);
+</script>
 
-  const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
-
-    function updateHUD() {
-  document.getElementById("hud-room").innerText = player;
-  document.getElementById("hud-arrows").innerText = arrows;
-  document.getElementById("hud-turns").innerText = turns;
-}
-
-  
-  
-  </script>
 
 </body>
 </html>
