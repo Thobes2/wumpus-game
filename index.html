@@ -65,13 +65,14 @@
     font-size: 3em;
   }
 
-  #torch {
-  font-family: monospace;
-  color: orange;
-  white-space: pre;
-  font-size: 0.75em;
-  line-height: 1;
-  margin-top: 0.5em;
+  #rune-sequence {
+  font-family: 'UnifrakturCook', cursive;
+  margin-left: 0.5em;
+  color: #cc3300;
+  letter-spacing: 0.1em;
+  font-size: 0.8em;
+  vertical-align: middle;
+  transition: color 0.2s ease-in-out;
 }
 
 #start-screen button {
@@ -105,10 +106,10 @@
 </head>
 <body>
   <div id="title-row">
-  <h1>Hunt the Wumpus</h1>
-  <pre id="torch" aria-hidden="true"></pre>
-</div>
-
+    <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
+  </div>
+  
+  
   <audio id="bg-music" loop>
   <source src="https://soundimage.org/wp-content/uploads/2022/11/Ancient-Mysteries_Looping.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
@@ -317,30 +318,26 @@ function waitForEnter(e) {
 
 const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
 
-const torchFrames = [
-`  ^
- /|\\
-  |`,
+const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☼", "ᛏ", "Ϟ", "⚡"];
+const runeColors = ["#cc3300", "#ffaa00", "#ffcc00", "#dd22aa", "#9933ff", "#ff3366"];
 
-`  *
- /|\\
-  |`,
+function updateRuneSequence() {
+  let runes = '';
+  for (let i = 0; i < 4; i++) {
+    runes += runeOptions[Math.floor(Math.random() * runeOptions.length)];
+  }
+  const color = runeColors[Math.floor(Math.random() * runeColors.length)];
+  const el = document.getElementById("rune-sequence");
+  el.textContent = runes;
+  el.style.color = color;
+}
 
-`  +
- /|\\
-  |`,
-
-`  '
- /|\\
-  |`
-];
+setInterval(updateRuneSequence, 400);
 
 
-let currentTorchFrame = 0;
-setInterval(() => {
-  document.getElementById("torch").innerText = torchFrames[currentTorchFrame];
-  currentTorchFrame = (currentTorchFrame + 1) % torchFrames.length;
-}, 300); // Adjust speed here
+
+
+
 </script>
 
 
