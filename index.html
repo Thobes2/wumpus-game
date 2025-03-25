@@ -110,6 +110,9 @@
   Your browser does not support the audio element.
 </audio>
 
+<div id="game-wrapper" style="display: none;">
+
+  <div id="rules">
 
    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious. </p>
   
@@ -119,7 +122,20 @@
     <li><strong>Shoot</strong> an arrow into a room</li>
   </ul>
   <p>If you enter the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late! But don't go postal; you only have 3 arrows.</p>
+<div id="game-container">
+    <pre id="game"></pre>
 
+    <div id="hud">Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span></div>
+
+    <div>
+      <input id="input" placeholder="Enter room #..." />
+      <button onclick="makeMove()">Go</button>
+      <button onclick="shootArrow()">Shoot</button>
+      <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
+    </div>
+  </div>
+
+</div>
   
 <div id="start-screen">
   <button type="button" onclick="startGame()">Play</button>
@@ -295,8 +311,7 @@ function typeWriter(text, i, callback) {
 
 function startGame() {
   document.getElementById("start-screen").style.display = "none";     // Hide Play button
-  document.getElementById("rules").style.display = "block";           // Show rules
-  document.getElementById("game-container").style.display = "block";  // Show game
+  document.getElementById("game-wrapper").style.display = "block";
   document.getElementById("bg-music").play();
 
   typeWriter(introText, 0, () => {
