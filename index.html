@@ -318,7 +318,7 @@ function waitForEnter(e) {
 
 const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
 
-const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☼", "ᛏ", "Ϟ", "⚡"];
+const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☼", "ᛏ", "Ϟ", "ᛥ"];
 const runeColors = ["#cc3300", "#ffaa00", "#ffcc00", "#dd22aa", "#9933ff", "#ff3366"];
 
 function updateRuneSequence() {
@@ -332,7 +332,7 @@ function updateRuneSequence() {
   el.style.color = color;
 }
 
-setInterval(updateRuneSequence, 400);
+setInterval(updateRuneSequence, 100);
 
 
 
