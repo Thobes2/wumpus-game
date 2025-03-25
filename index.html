@@ -75,7 +75,7 @@
   }
 #start-screen button {
   font-family: 'UnifrakturCook', cursive;
-  font-size: 1.5em;
+  font-size: 1.2em;
   background-color: #111;     /* very dark background */
   color: #ccc;                /* light gray text */
   border: 2px solid #333;     /* dark border */
@@ -109,12 +109,12 @@
 
    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious. </p>
   
-  <strong>Rules:</strong> You are in a cave with 20 chambers, connected by tunnels. The Wumpus is hiding in one of the chambers. Each turn, you can either:</p>
+  <strong>Rules:</strong> You are in a cave with 20 rooms, connected by tunnels. The Wumpus is hiding in one of the rooms. Each turn, you can either:</p>
   <ul>
-    <li><strong>Go</strong> to a connected chamber</li>
-    <li><strong>Shoot</strong> an arrow into a connected chamber</li>
+    <li><strong>Go</strong> to a connected room</li>
+    <li><strong>Shoot</strong> an arrow into a connected room</li>
   </ul>
-  <p>If you enter the Wumpus’s chamber, you get eaten. If you shoot into the Wumpus’s chamber, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late!</p>
+  <p>If you enter the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late!</p>
 
   
 <div id="start-screen">
@@ -124,8 +124,12 @@
   
   <pre id="game"></pre>
 
+  <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
+  Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span>
+  </div>
+
   <div style="margin-top: 1em;">
-    <input type="text" id="input" placeholder="Enter chamber #..." />
+    <input type="text" id="input" placeholder="Enter room #..." />
     <button onclick="makeMove()">Go</button>
     <button onclick="shootArrow()">Shoot</button>
     <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
@@ -141,11 +145,11 @@
   };
 
     const roomAdjectives = [
-  "a narrow stone chamber",
+  "a narrow stone room",
   "🌊 a flooded passageway",
   "a dome-shaped vaulted with crumbling walls",
   "a low-ceilinged tunnel",
-  "a chamber etched with forgotten runes ᛤ",
+  "a room etched with forgotten runes ᛤ",
   "a cavern that smells of sulfur",
   "a torchlit hallway with dripping walls",
   "🦴 a room littered with bones",
@@ -169,6 +173,9 @@ const sensoryHints = [
   let player = 1;
   let wumpus = Math.floor(Math.random() * 20) + 1;
 
+  let arrows = 3;
+  let turns = 0; // Optional: count turns while we're at it
+
 function describeRoom() {
   const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
   const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
@@ -191,7 +198,7 @@ function describeRoom() {
     const inputValue = document.getElementById("input").value.trim();
     const move = parseInt(inputValue);
     const validMoves = map[player];
-
+    
     if (isNaN(move)) {
       document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
       document.getElementById("input").value = '';
@@ -218,9 +225,22 @@ function describeRoom() {
     document.getElementById("input").value = '';
   }
 
+    turns++;
+updateHUD();
+
+
   function shootArrow() {
+    
+    if (arrows <= 0) {
+  document.getElementById("game").innerText = "You have no arrows left. The Wumpus lives... for now.";
+  return;
+}
+
     const inputValue = document.getElementById("input").value.trim();
     const targetRoom = parseInt(inputValue);
+
+    arrows--;
+updateHUD();
 
     if (isNaN(targetRoom)) {
       document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
@@ -236,7 +256,7 @@ function describeRoom() {
         const output = [
           "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
           "",
-          `You are in chamber ${player}.`,
+          `You are in room ${player}.`,
           `Tunnels lead to ${map[player].join(', ')}.`
         ];
         if (map[player].includes(wumpus)) {
@@ -246,7 +266,7 @@ function describeRoom() {
       }
     } else {
       const output = [
-        `Your shot ricochets off stone. You can't shoot into chamber ${targetRoom}.`,
+        `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
         `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
       ];
       document.getElementById("game").innerText = output.join('\n');
@@ -254,6 +274,8 @@ function describeRoom() {
 
     document.getElementById("input").value = '';
   }
+
+    
 
   function restartGame() {
     player = 1;
@@ -282,6 +304,11 @@ function describeRoom() {
     document.addEventListener("keydown", waitForEnter);
   });
 }
+
+    arrows = 3;
+turns = 0;
+updateHUD();
+
 
     function waitForEnter(e) {
   if (e.key === "Enter") {
@@ -313,7 +340,16 @@ setInterval(() => {
 }, 300);
 
   const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
-</script>
+
+    function updateHUD() {
+  document.getElementById("hud-room").innerText = player;
+  document.getElementById("hud-arrows").innerText = arrows;
+  document.getElementById("hud-turns").innerText = turns;
+}
+
+  
+  
+  </script>
 
 </body>
 </html>
