@@ -17,6 +17,17 @@
       font-size: 3em;
       margin-bottom: 0.2em;
     }
+    #rune-sequence {
+      font-family: 'UnifrakturCook', cursive;
+      margin-left: 0.5em;
+      color: #cc3300;
+      letter-spacing: 0.1em;
+      font-size: 0.6em;
+      vertical-align: baseline;
+      position: relative;
+      top: -6px;
+      transition: color 0.2s ease-in-out;
+    }
     #game {
       white-space: pre-wrap;
       background: #fff;
@@ -30,97 +41,30 @@
       padding: 0.4em;
       margin-top: 0.5em;
     }
-    #start-screen {
-  text-align: left;
-  margin-top: 10px;
-}
-
-    .blinking-cursor {
-  display: inline-block;
-  animation: blink 1s step-start infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-    #title-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  margin-bottom: 1em;
-}
-    
-#title-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 1em;
-    margin-bottom: 1em;
-  }
-
-  #title-row h1 {
-    margin: 0;
-    font-family: 'UnifrakturCook', cursive;
-    font-size: 3em;
-  }
-
-  #rune-sequence {
-  font-family: 'UnifrakturCook', cursive;
-  margin-left: 0.5em;
-  color: #cc3300;
-  letter-spacing: 0.1em;
-  font-size: 0.6em;
-  vertical-align: baseline;
-  position: relative;
-  top: -6px; /* or 0px, -2px depending on browser */
-  transition: color 0.2s ease-in-out;
-}
-
-#start-screen button {
-  font-family: 'UnifrakturCook', cursive;
-  font-size: 1.2em;
-  background-color: #111;     /* very dark background */
-  color: #ccc;                /* light gray text */
-  border: 2px solid #333;     /* dark border */
-  padding: 0.6em 1.2em;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-#start-screen button:hover {
-  background-color: #222;     /* slightly lighter on hover */
-  color: #fff;                /* bright text on hover */
-  border-color: #666;
-}
-
-
+    #start-screen button {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.2em;
+      background-color: #111;
+      color: #ccc;
+      border: 2px solid #333;
+      padding: 0.6em 1.2em;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    #start-screen button:hover {
+      background-color: #222;
+      color: #fff;
+      border-color: #666;
+    }
   </style>
 </head>
 <body>
-  <div id="title-row">
-    <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
-  </div>
-  
-  
-  <audio id="bg-music" loop>
-  <source src="https://soundimage.org/wp-content/uploads/2022/11/Ancient-Mysteries_Looping.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-
-
-<div id="start-screen">
-  <button type="button" onclick="startGame()">Play</button>
-</div>
-
-<!-- Everything else stays hidden until Play is pressed -->
-<div id="game-wrapper" style="display: none;">
+  <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
 
   <div id="rules">
     <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is elusive; as furry as it is ferocious.</p>
-
     <strong>Rules:</strong> You are in a cave with 20 rooms connected by tunnels. The Wumpus is hiding in one of the rooms. Each turn, you can either:
     <ul>
       <li><strong>Go</strong> to a room</li>
@@ -129,253 +73,115 @@
     <p>If you enter the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late! But don't go postal; you only have 3 arrows.</p>
   </div>
 
-  <div id="game-container">
-    <pre id="game"></pre>
+  <div id="start-screen">
+    <button onclick="startGame()">Play</button>
+  </div>
 
+  <div id="game-wrapper" style="display: none;">
+    <pre id="game"></pre>
     <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
       Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span>
     </div>
-
     <div style="margin-top: 1em;">
-      <input type="text" id="input" placeholder="Enter room #..." />
+      <input type="text" id="input" placeholder="Enter room #...">
       <button onclick="makeMove()">Go</button>
       <button onclick="shootArrow()">Shoot</button>
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
   </div>
-</div>
-
-
-      <input id="input" placeholder="Enter room #..." />
-      <button onclick="makeMove()">Go</button>
-      <button onclick="shootArrow()">Shoot</button>
-      <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
-    </div>
-  </div>
-
-</div>
-  
-<div id="start-screen">
-  <button type="button" onclick="startGame()">Play</button>
-</div>
-
-  
-  <pre id="game"></pre>
-
-  
-  <div id="game-container" style="display: none;">
-    <pre id="game"></pre>
-  
-    <div id="hud">...</div>
-  
-    <div>
-      <input id="input" ... />
-      <button onclick="makeMove()">Go</button>
-      <button onclick="shootArrow()">Shoot</button>
-      <button id="restart" ...>Restart Game</button>
-    </div>
-  </div>
-  
 
   <script>
-const map = {
-  1: [2, 5, 8],   2: [1, 3, 10],  3: [2, 4, 12],  4: [3, 5, 14],  5: [1, 4, 6],
-  6: [5, 7, 15],  7: [6, 8, 17],  8: [1, 7, 9],   9: [8, 10, 18], 10: [2, 9, 11],
-  11: [10, 12, 19], 12: [3, 11, 13], 13: [12, 14, 20], 14: [4, 13, 15],
-  15: [6, 14, 16], 16: [15, 17, 20], 17: [7, 16, 18], 18: [9, 17, 19],
-  19: [11, 18, 20], 20: [13, 16, 19]
-};
+    const map = { 1:[2,5,8],2:[1,3,10],3:[2,4,12],4:[3,5,14],5:[1,4,6],6:[5,7,15],7:[6,8,17],8:[1,7,9],9:[8,10,18],10:[2,9,11],11:[10,12,19],12:[3,11,13],13:[12,14,20],14:[4,13,15],15:[6,14,16],16:[15,17,20],17:[7,16,18],18:[9,17,19],19:[11,18,20],20:[13,16,19] };
+    const roomAdjectives = ["a narrow stone room","a flooded passageway","a dome-shaped vault with crumbling walls","a low-ceilinged tunnel","a room etched with forgotten runes ᛤ","a cavern that smells of sulfur","a torchlit hallway with dripping walls","a room littered with bones","a vaulted corridor echoing your footsteps","a room cloaked in eerie silence"];
+    const sensoryHints = ["The air is cold and still.","You hear distant dripping water.","The ground crunches under your feet.","A breeze brushes your cheek.","You feel eyes watching from the dark.","A musty odor fills the air.","You nearly trip over a broken helmet.","There’s a strange warmth in the stone.","You taste iron in the air.","Your torch flickers for a moment."];
 
-const roomAdjectives = [
-  "a narrow stone room", "🌊 a flooded passageway", "a dome-shaped vault with crumbling walls",
-  "a low-ceilinged tunnel", "a room etched with forgotten runes ᛤ", "a cavern that smells of sulfur",
-  "a torchlit hallway with dripping walls", "🦴 a room littered with bones",
-  "a vaulted corridor echoing your footsteps", "a room cloaked in eerie silence"
-];
+    let player = 1;
+    let wumpus = Math.floor(Math.random() * 20) + 1;
+    let arrows = 3;
+    let turns = 0;
 
-const sensoryHints = [
-  "The air is cold and still.", "💧 You hear distant dripping water.", "The ground crunches under your feet.",
-  "💨 A breeze brushes your cheek.", "👁️ You feel eyes watching from the dark.",
-  "A musty odor fills the air.", "You nearly trip over a broken helmet.",
-  "There’s a strange warmth in the stone.", "You taste iron in the air.",
-  "🔥 Your torch flickers for a moment."
-];
+    const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☌", "ᛏ", "Ϟ", "ᛥ"];
+    const runeColors = ["#cc3300", "#ffaa00", "#ffcc00", "#dd22aa", "#9933ff", "#ff3366"];
 
-let player = 1;
-let wumpus = Math.floor(Math.random() * 20) + 1;
-let arrows = 3;
-let turns = 0;
-
-function updateHUD() {
-  document.getElementById("hud-room").innerText = player;
-  document.getElementById("hud-arrows").innerText = arrows;
-  document.getElementById("hud-turns").innerText = turns;
-}
-
-function describeRoom() {
-  const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
-  const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
-
-  const output = [
-    `You step into ${flavor}.`,
-    sense,
-    `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
-  ];
-
-  if (map[player].includes(wumpus)) {
-    output.push("A foul stench creeps through the stone... the Wumpus is near.");
-  }
-
-  document.getElementById("game").innerText = output.join('\n');
-}
-
-function makeMove() {
-  const inputValue = document.getElementById("input").value.trim();
-  const move = parseInt(inputValue);
-  const validMoves = map[player];
-
-  if (isNaN(move)) {
-    document.getElementById("game").innerText = "The cave echoes back your nonsense. Try a valid room number.";
-    document.getElementById("input").value = '';
-    return;
-  }
-
-  if (validMoves.includes(move)) {
-    player = move;
-    turns++;
-    updateHUD();
-    if (player === wumpus) {
-      document.getElementById("game").innerText = "You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!";
-      document.getElementById("restart").style.display = 'inline';
-    } else {
-      describeRoom();
-    }
-  } else {
-    const output = [
-      `A stone wall blocks your path. You can't go to room ${move}.`,
-      `You remain in room ${player}.`,
-      `Tunnels lead to: ${validMoves.join(', ')}.`
-    ];
-    document.getElementById("game").innerText = output.join('\n');
-  }
-
-  document.getElementById("input").value = '';
-}
-
-function shootArrow() {
-  if (arrows <= 0) {
-    document.getElementById("game").innerText = "You have no arrows left. The Wumpus lives... for now.";
-    return;
-  }
-
-  const inputValue = document.getElementById("input").value.trim();
-  const targetRoom = parseInt(inputValue);
-
-  arrows--;
-  turns++;
-  updateHUD();
-
-  if (isNaN(targetRoom)) {
-    document.getElementById("game").innerText = "Your hand trembles. Aim at a real room, adventurer.";
-    document.getElementById("input").value = '';
-    return;
-  }
-
-  if (map[player].includes(targetRoom)) {
-    if (targetRoom === wumpus) {
-      document.getElementById("game").innerText = "Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!";
-      document.getElementById("restart").style.display = 'inline';
-    } else {
-      const output = [
-        "The arrow clatters in the dark... nothing stirs. The Wumpus lives.",
-        "",
-        `You are in room ${player}.`,
-        `Tunnels lead to ${map[player].join(', ')}.`
-      ];
-      if (map[player].includes(wumpus)) {
-        output.push("A foul stench creeps through the stone... the Wumpus is near.");
+    function updateRuneSequence() {
+      let runes = '';
+      for (let i = 0; i < 4; i++) {
+        runes += runeOptions[Math.floor(Math.random() * runeOptions.length)];
       }
+      const color = runeColors[Math.floor(Math.random() * runeColors.length)];
+      const el = document.getElementById("rune-sequence");
+      el.textContent = runes;
+      el.style.color = color;
+    }
+    setInterval(updateRuneSequence, 1000);
+
+    function updateHUD() {
+      document.getElementById("hud-room").innerText = player;
+      document.getElementById("hud-arrows").innerText = arrows;
+      document.getElementById("hud-turns").innerText = turns;
+    }
+
+    function describeRoom() {
+      const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
+      const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
+      const output = [`You step into ${flavor}.`, sense, `Tunnels stretch out toward rooms ${map[player].join(', ')}.`];
+      if (map[player].includes(wumpus)) output.push("A foul stench creeps through the stone... the Wumpus is near.");
       document.getElementById("game").innerText = output.join('\n');
     }
-  } else {
-    const output = [
-      `Your shot ricochets off stone. You can't shoot into room ${targetRoom}.`,
-      `From room ${player}, your bow can only reach: ${map[player].join(', ')}.`
-    ];
-    document.getElementById("game").innerText = output.join('\n');
-  }
 
-  document.getElementById("input").value = '';
-}
+    function makeMove() {
+      const move = parseInt(document.getElementById("input").value.trim());
+      const validMoves = map[player];
+      if (isNaN(move)) return setGameText("The cave echoes back your nonsense. Try a valid room number.");
+      if (validMoves.includes(move)) {
+        player = move;
+        turns++;
+        updateHUD();
+        if (player === wumpus) setGameText("You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!", true);
+        else describeRoom();
+      } else {
+        setGameText(`A stone wall blocks your path.\nYou remain in room ${player}.\nTunnels lead to: ${validMoves.join(', ')}`);
+      }
+      document.getElementById("input").value = '';
+    }
 
-function restartGame() {
-  player = 1;
-  wumpus = Math.floor(Math.random() * 20) + 1;
-  arrows = 3;
-  turns = 0;
-  document.getElementById("restart").style.display = 'none';
-  updateHUD();
-  describeRoom();
-}
+    function shootArrow() {
+      if (arrows <= 0) return setGameText("You have no arrows left. The Wumpus lives... for now.");
+      const targetRoom = parseInt(document.getElementById("input").value.trim());
+      arrows--;
+      turns++;
+      updateHUD();
+      if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
+      if (map[player].includes(targetRoom)) {
+        if (targetRoom === wumpus) setGameText("Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!", true);
+        else describeRoom();
+      } else {
+        setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
+      }
+      document.getElementById("input").value = '';
+    }
 
-function typeWriter(text, i, callback) {
-  if (i < text.length) {
-    document.getElementById("game").innerText = text.substring(0, i + 1);
-    setTimeout(() => typeWriter(text, i + 1, callback), 40);
-  } else if (typeof callback === 'function') {
-    callback();
-  }
-}
+    function setGameText(text, end = false) {
+      document.getElementById("game").innerText = text;
+      if (end) document.getElementById("restart").style.display = 'inline';
+    }
 
-function startGame() {
-  document.getElementById("start-screen").style.display = "none";     // Hide Play button
-  document.getElementById("game-wrapper").style.display = "block";
-  document.getElementById("bg-music").play();
+    function restartGame() {
+      player = 1;
+      wumpus = Math.floor(Math.random() * 20) + 1;
+      arrows = 3;
+      turns = 0;
+      updateHUD();
+      document.getElementById("restart").style.display = 'none';
+      describeRoom();
+    }
 
-  typeWriter(introText, 0, () => {
-    const prompt = document.createElement("p");
-    prompt.id = "continue-prompt";
-    prompt.innerHTML = 'Press Enter to continue<span class="blinking-cursor">_</span>';
-    document.getElementById("game").appendChild(prompt);
-    document.addEventListener("keydown", waitForEnter);
-  });
-
-  updateHUD();
-}
-
-function waitForEnter(e) {
-  if (e.key === "Enter") {
-    document.removeEventListener("keydown", waitForEnter);
-    const prompt = document.getElementById("continue-prompt");
-    if (prompt) prompt.remove();
-    describeRoom();
-  }
-}
-
-const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
-
-const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☼", "ᛏ", "Ϟ", "ᛥ"];
-const runeColors = ["#cc3300", "#ffaa00", "#ffcc00", "#dd22aa", "#9933ff", "#ff3366"];
-
-function updateRuneSequence() {
-  let runes = '';
-  for (let i = 0; i < 4; i++) {
-    runes += runeOptions[Math.floor(Math.random() * runeOptions.length)];
-  }
-  const color = runeColors[Math.floor(Math.random() * runeColors.length)];
-  const el = document.getElementById("rune-sequence");
-  el.textContent = runes;
-  el.style.color = color;
-}
-
-setInterval(updateRuneSequence, 1000);
-
-
-
-
-
-</script>
-
-
+    function startGame() {
+      document.getElementById("start-screen").style.display = "none";
+      document.getElementById("game-wrapper").style.display = "block";
+      updateHUD();
+      describeRoom();
+    }
+  </script>
 </body>
 </html>
