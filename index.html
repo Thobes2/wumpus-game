@@ -294,16 +294,20 @@ function typeWriter(text, i, callback) {
 }
 
 function startGame() {
-  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "none";     // Hide Play button
+  document.getElementById("rules").style.display = "block";           // Show rules
+  document.getElementById("game-container").style.display = "block";  // Show game
   document.getElementById("bg-music").play();
+
   typeWriter(introText, 0, () => {
     const prompt = document.createElement("p");
     prompt.id = "continue-prompt";
     prompt.innerHTML = 'Press Enter to continue<span class="blinking-cursor">_</span>';
     document.getElementById("game").appendChild(prompt);
     document.addEventListener("keydown", waitForEnter);
-    updateHUD(); // Ensure HUD is shown after typewriter
   });
+
+  updateHUD();
 }
 
 function waitForEnter(e) {
