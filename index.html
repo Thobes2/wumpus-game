@@ -66,13 +66,14 @@
   }
 
   #torch {
-    font-family: monospace;
-    color: orange;
-    white-space: pre;
-    line-height: 1;
-    font-size: 0.9em;
-    margin-top: 0.5em;
-  }
+  font-family: monospace;
+  color: orange;
+  white-space: pre;
+  font-size: 0.75em;
+  line-height: 1;
+  margin-top: 0.5em;
+}
+
 #start-screen button {
   font-family: 'UnifrakturCook', cursive;
   font-size: 1.2em;
@@ -317,40 +318,21 @@ function waitForEnter(e) {
 const introText = "You awaken in a cold, dripping cave. A voice echoes in your mind:\n\n*Hunt the Wumpus... or be hunted.*\n\n";
 
 const torchFrames = [
-`  )
- (
-  )
-  |
+`  ^
  /|\\
- / \\`,
+  |`,
 
-` (
-  )
- (
-  |
+`  *
  /|\\
- / \\`,
+  |`,
 
-`  )
- (
-  )
- \\|/
-  |
- / \\`,
-
-`  )
- (
-  )
-  |
- \\|/
- / \\`,
-
-`  )
- (
-  )
-  |
+`  +
  /|\\
- / \\`
+  |`,
+
+`  '
+ /|\\
+  |`
 ];
 
 
