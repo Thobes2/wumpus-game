@@ -129,16 +129,19 @@
   <pre id="game"></pre>
 
   
-  <div style="margin-top: .5em;">
-    <input type="text" id="input" placeholder="Enter room #..." />
-    <button onclick="makeMove()">Go</button>
-    <button onclick="shootArrow()">Shoot</button>
-    <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
+  <div id="game-container" style="display: none;">
+    <pre id="game"></pre>
+  
+    <div id="hud">...</div>
+  
+    <div>
+      <input id="input" ... />
+      <button onclick="makeMove()">Go</button>
+      <button onclick="shootArrow()">Shoot</button>
+      <button id="restart" ...>Restart Game</button>
+    </div>
   </div>
-
-  <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
-    Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Rooms Explored: <span id="hud-turns">0</span>
-  </div>
+  
 
   <script>
 const map = {
