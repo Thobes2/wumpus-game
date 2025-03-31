@@ -53,6 +53,16 @@
       letter-spacing: 1px;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
+
+    #rules {
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+    #rules.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     #start-screen button:hover {
       background-color: #222;
       color: #fff;
@@ -64,7 +74,7 @@
   <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
 
   <div id="rules">
-    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is mysterious; as furry as it is ferocious.</p>
+    <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is mysterious.</p>
     <strong>Rules:</strong> You are in a cave with 20 rooms connected by tunnels. The Wumpus is hiding in one of the rooms. Each turn, you can either:
     <ul>
       <li><strong>Go</strong> to a room</li>
@@ -146,25 +156,51 @@
     }
 
     function shootArrow() {
+      if (arrows <= 0) return triggerArrowPuzzle();
       const targetRoom = parseInt(document.getElementById("input").value.trim());
-      if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
-      if (arrows <= 0) {
-        setGameText("You have no arrows left. The Wumpus lives... for now.");
-        return;
-      }
       arrows--;
       turns++;
       updateHUD();
+      if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
       if (map[player].includes(targetRoom)) {
         if (targetRoom === wumpus) {
-          setGameText("Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!", true);
-        } else {
-          describeRoom();
-        }
+          const feastText = [
+            "Your arrow whistles through the air and strikes true!",
+            "A bone-shaking shriek echoes through the cavern... then silence.",
+            "The Wumpus lies still. You have survived.",
+            "",
+            "🔥 Torches blaze to life as hidden doors open...",
+            "🏺 Ancient murals glow with firelight.",
+            "🍖 The tribe emerges from the shadows, lifting you on their shoulders.",
+            "",
+            "Tonight, you feast.",
+            "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+            "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+            "",
+            "You have won the Wumpus Feast.",
+            "",
+            "(Click 'Restart Game' to hunt again.)"
+          ].join('\n');
+          setGameText(feastText, true);
+        } else describeRoom();
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
       }
       document.getElementById("input").value = '';
+    }
+
+    function triggerArrowPuzzle() {
+      const number = Math.floor(Math.random() * 20) + 1;
+      const isEven = number % 2 === 0;
+      const riddle = `The glimmering runes whisper: "I am a number between 1 and 20. I am ${isEven ? 'even' : 'odd'}. Guess me, and I shall become an arrow."\n\nEnter your guess:`;
+      const guess = parseInt(prompt(riddle));
+      if (guess === number) {
+        arrows++;
+        setGameText(`✨ The runes glow brightly. You feel an arrow materialize in your quiver.\n\nYou now have ${arrows} arrow(s).`);
+      } else {
+        setGameText("The runes dim. You remain empty-handed.");
+      }
+      updateHUD();
     }
 
     function setGameText(text, end = false) {
@@ -184,9 +220,14 @@
 
     function startGame() {
       document.getElementById("start-screen").style.display = "none";
-      document.getElementById("game-wrapper").style.display = "block";
-      updateHUD();
-      describeRoom();
+      const rules = document.getElementById("rules");
+      rules.classList.add("hidden");
+      setTimeout(() => {
+        rules.style.display = "none";
+        document.getElementById("game-wrapper").style.display = "block";
+        updateHUD();
+        describeRoom();
+      }, 800);
     }
   </script>
 </body>
