@@ -84,7 +84,8 @@
     </div>
     <div style="margin-top: 1em;">
       <input type="text" id="input" placeholder="Enter room #...">
-      <button onclick="handleInput()">Submit</button>
+      <button onclick="makeMove()">Go</button>
+      <button onclick="shootArrow()">Shoot</button>
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
   </div>
@@ -98,7 +99,6 @@
     let wumpus = Math.floor(Math.random() * 20) + 1;
     let arrows = 3;
     let turns = 0;
-    let runeChallengeActive = false;
 
     const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☌", "ᛏ", "Ϟ", "ᛥ"];
     const runeColors = ["#cc3300", "#ffaa00", "#ffcc00", "#dd22aa", "#9933ff", "#ff3366"];
@@ -129,8 +129,8 @@
       document.getElementById("game").innerText = output.join('\n');
     }
 
-    function makeMove(inputValue) {
-      const move = parseInt(inputValue);
+    function makeMove() {
+      const move = parseInt(document.getElementById("input").value.trim());
       const validMoves = map[player];
       if (isNaN(move)) return setGameText("The cave echoes back your nonsense. Try a valid room number.");
       if (validMoves.includes(move)) {
@@ -142,15 +142,24 @@
       } else {
         setGameText(`A stone wall blocks your path.\nYou remain in room ${player}.\nTunnels lead to: ${validMoves.join(', ')}`);
       }
+      document.getElementById("input").value = '';
     }
 
-    function shootArrow(inputValue) {
-      if (arrows <= 0) return triggerRuneChallenge();
-      const targetRoom = parseInt(inputValue);
+    function shootArrow() {
+      const targetRoom = parseInt(document.getElementById("input").value.trim());
+      if (arrows <= 0) {
+        setGameText("You have no arrows left. The Wumpus lives... for now.");
+        return;
+      }
       arrows--;
       turns++;
       updateHUD();
-      if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
+
+      if (isNaN(targetRoom)) {
+        setGameText("Your hand trembles. Aim at a real room, adventurer.");
+        return;
+      }
+
       if (map[player].includes(targetRoom)) {
         if (targetRoom === wumpus) {
           const feastText = [
@@ -171,10 +180,13 @@
             "(Click 'Restart Game' to hunt again.)"
           ].join('\n');
           setGameText(feastText, true);
-        } else describeRoom();
+        } else {
+          describeRoom();
+        }
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
       }
+      document.getElementById("input").value = '';
     }
 
     function setGameText(text, end = false) {
@@ -187,7 +199,6 @@
       wumpus = Math.floor(Math.random() * 20) + 1;
       arrows = 3;
       turns = 0;
-      runeChallengeActive = false;
       updateHUD();
       document.getElementById("restart").style.display = 'none';
       describeRoom();
@@ -198,32 +209,6 @@
       document.getElementById("game-wrapper").style.display = "block";
       updateHUD();
       describeRoom();
-    }
-
-    function triggerRuneChallenge() {
-      runeChallengeActive = true;
-      setGameText("Your quiver is empty.\nBut beneath your feet... a faint glow. A glimmering rune hums with ancient energy.\n\nThe rune whispers:\n'I am a three-digit number.\nMy digits add to 9.\nThe first is twice the second.\nThe third is 3.'\n\nSpeak the number to earn another arrow...");
-    }
-
-    function handleInput() {
-      const inputValue = document.getElementById("input").value.trim();
-      document.getElementById("input").value = '';
-      if (runeChallengeActive) {
-        if (inputValue === "423") {
-          arrows = 1;
-          runeChallengeActive = false;
-          updateHUD();
-          setGameText("The rune pulses... and vanishes. A spectral arrow forms in your hand. You may hunt again.");
-        } else {
-          runeChallengeActive = false;
-          setGameText("The rune fades into darkness. You remain empty-handed. The Wumpus waits.");
-        }
-      } else {
-        const move = parseInt(inputValue);
-        if (!isNaN(move)) {
-          shootArrow(inputValue); // Default to shooting for simplicity
-        }
-      }
     }
   </script>
 </body>
