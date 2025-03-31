@@ -200,7 +200,7 @@
 
     let awaitingRiddleAnswer = false;
 
-function showRiddle() {
+    function showRiddle() {
   const riddleText = [
     "You are out of arrows!",
     "",
@@ -217,12 +217,11 @@ function showRiddle() {
   setGameText(riddleText);
   awaitingRiddleAnswer = true;
 
-  // Add a "Solve" button if not already present
   const solveBtn = document.getElementById("solve-button");
-solveBtn.style.display = "inline";
-solveBtn.onclick = solveRiddle;
-  }
+  solveBtn.style.display = "inline";
+  solveBtn.onclick = solveRiddle;
 }
+
 
 function solveRiddle() {
   const input = document.getElementById("input").value.trim();
