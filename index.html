@@ -153,8 +153,27 @@
       updateHUD();
       if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
       if (map[player].includes(targetRoom)) {
-        if (targetRoom === wumpus) setGameText("Your arrow whistles through the air and strikes true! The Wumpus shrieks and collapses. You are victorious!", true);
-        else describeRoom();
+        if (targetRoom === wumpus) {
+  const feastText = [
+    "Your arrow whistles through the air and strikes true!",
+    "A bone-shaking shriek echoes through the cavern... then silence.",
+    "The Wumpus lies still. You have survived.",
+    "",
+    "🔥 Torches blaze to life as hidden doors open...",
+    "🏺 Ancient murals glow with firelight.",
+    "🍖 The tribe emerges from the shadows, lifting you on their shoulders.",
+    "",
+    "Tonight, you feast.",
+    "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+    "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+    "",
+    "You have won the Wumpus Feast.",
+    "",
+    "(Click 'Restart Game' to hunt again.)"
+  ].join('\n');
+
+  setGameText(feastText, true);
+}        else describeRoom();
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
       }
