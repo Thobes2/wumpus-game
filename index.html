@@ -225,33 +225,40 @@
 
 function solveRiddle() {
   const input = document.getElementById("input").value.trim();
+  const solveBtn = document.getElementById("solve-button");
+  solveBtn.style.display = "none";
+  document.getElementById("input").value = '';
+  awaitingRiddleAnswer = false;
+
   if (input === "423") {
-    setGameText("⚡ The rune flares brightly...\n\nYou gain 1 arrow.");
     arrows = 1;
     updateHUD();
+    setGameText("⚡ The rune flares brightly...\n\nYou gain 1 arrow.", false, () => {
+      describeRoom(); // Resume game with full room state
+    });
   } else {
-    setGameText("The rune fades into the stone. No arrows. No mercy.");
-  }
-  awaitingRiddleAnswer = false;
-  document.getElementById("input").value = '';
-  const solveBtn = document.getElementById("solve-button");
-  if (solveBtn) {
-    solveBtn.style.display = "none";
+    const failText = "The rune fades into the stone. No arrows. No mercy.";
+    setGameText(failText, false, () => {
+      describeRoom(); // Still show the room state even after failure
+    });
   }
 }
 
-function setGameText(text, end = false) {
+function setGameText(text, end = false, callback = null) {
   const gameBox = document.getElementById("game");
-  gameBox.innerText = ""; // clear current content
+  gameBox.innerText = "";
 
   let i = 0;
   function typeChar() {
     if (i < text.length) {
       gameBox.innerText += text.charAt(i);
       i++;
-      setTimeout(typeChar, 20); // adjust speed here
-    } else if (end) {
-      document.getElementById("restart").style.display = 'inline';
+      setTimeout(typeChar, 20);
+    } else {
+      if (end) {
+        document.getElementById("restart").style.display = 'inline';
+      }
+      if (callback) callback(); // Runs after the typewriter is done
     }
   }
 
