@@ -137,7 +137,7 @@
       const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
       const output = [`You step into ${flavor}.`, sense, `Tunnels stretch out toward rooms ${map[player].join(', ')}.`];
       if (map[player].includes(wumpus)) output.push("A foul stench creeps through the stone... the Wumpus is near.");
-      setGameText("your text here");
+      setGameText(output.join('\n'));
 
     }
 
