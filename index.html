@@ -218,12 +218,9 @@ function showRiddle() {
   awaitingRiddleAnswer = true;
 
   // Add a "Solve" button if not already present
-  if (!document.getElementById("solve-button")) {
-    const solveBtn = document.createElement("button");
-    solveBtn.id = "solve-button";
-    solveBtn.textContent = "Solve";
-    solveBtn.onclick = solveRiddle;
-    document.getElementById("game-wrapper").appendChild(solveBtn);
+  const solveBtn = document.getElementById("solve-button");
+solveBtn.style.display = "inline";
+solveBtn.onclick = solveRiddle;
   }
 }
 
@@ -239,7 +236,8 @@ function solveRiddle() {
   awaitingRiddleAnswer = false;
   document.getElementById("input").value = '';
   const solveBtn = document.getElementById("solve-button");
-  if (solveBtn) solveBtn.remove();
+  if (solveBtn) {
+  solveBtn.style.display = "none";
 }
 
 function setGameText(text, end = false) {
