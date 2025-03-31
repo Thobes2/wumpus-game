@@ -233,14 +233,27 @@ function solveRiddle() {
   if (input === "423") {
     arrows = 1;
     updateHUD();
-    setGameText("⚡ The rune flares brightly...\n\nYou gain 1 arrow.", false, () => {
-      describeRoom(); // Resume game with full room state
-    });
+
+    const message = [
+      "⚡ The rune flares brightly...",
+      "",
+      "You gain 1 arrow.",
+      "",
+      `You remain in room ${player}.`,
+      `Tunnels lead to: ${map[player].join(', ')}.`
+    ].join('\n');
+
+    setGameText(message);
+
   } else {
-    const failText = "The rune fades into the stone. No arrows. No mercy.";
-    setGameText(failText, false, () => {
-      describeRoom(); // Still show the room state even after failure
-    });
+    const message = [
+      "The rune fades into the stone. No arrows. No mercy.",
+      "",
+      `You remain in room ${player}.`,
+      `Tunnels lead to: ${map[player].join(', ')}.`
+    ].join('\n');
+
+    setGameText(message);
   }
 }
 
@@ -255,10 +268,8 @@ function setGameText(text, end = false, callback = null) {
       i++;
       setTimeout(typeChar, 20);
     } else {
-      if (end) {
-        document.getElementById("restart").style.display = 'inline';
-      }
-      if (callback) callback(); // Runs after the typewriter is done
+      if (end) document.getElementById("restart").style.display = 'inline';
+      if (callback) callback();
     }
   }
 
