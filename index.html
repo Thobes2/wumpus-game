@@ -96,6 +96,7 @@
       <input type="text" id="input" placeholder="Enter room #...">
       <button onclick="makeMove()">Go</button>
       <button onclick="shootArrow()">Shoot</button>
+      <button id="solve-button" style="display:none;">Solve</button>
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
   </div>
@@ -136,7 +137,8 @@
       const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
       const output = [`You step into ${flavor}.`, sense, `Tunnels stretch out toward rooms ${map[player].join(', ')}.`];
       if (map[player].includes(wumpus)) output.push("A foul stench creeps through the stone... the Wumpus is near.");
-      document.getElementById("game").innerText = output.join('\n');
+      setGameText("your text here");
+
     }
 
     function makeMove() {
@@ -212,7 +214,7 @@ function showRiddle() {
     "Type your answer below and press 'Solve'."
   ].join('\n');
 
-  document.getElementById("game").innerText = riddleText;
+  setGameText(riddleText);
   awaitingRiddleAnswer = true;
 
   // Add a "Solve" button if not already present
@@ -228,11 +230,11 @@ function showRiddle() {
 function solveRiddle() {
   const input = document.getElementById("input").value.trim();
   if (input === "423") {
-    document.getElementById("game").innerText = "⚡ The rune flares brightly...\n\nYou gain 1 arrow.";
+    setGameText("⚡ The rune flares brightly...\n\nYou gain 1 arrow.");
     arrows = 1;
     updateHUD();
   } else {
-    document.getElementById("game").innerText = "The rune fades into the stone. No arrows. No mercy.";
+    setGameText("The rune fades into the stone. No arrows. No mercy.");
   }
   awaitingRiddleAnswer = false;
   document.getElementById("input").value = '';
@@ -240,10 +242,23 @@ function solveRiddle() {
   if (solveBtn) solveBtn.remove();
 }
 
-    function setGameText(text, end = false) {
-      document.getElementById("game").innerText = text;
-      if (end) document.getElementById("restart").style.display = 'inline';
+function setGameText(text, end = false) {
+  const gameBox = document.getElementById("game");
+  gameBox.innerText = ""; // clear current content
+
+  let i = 0;
+  function typeChar() {
+    if (i < text.length) {
+      gameBox.innerText += text.charAt(i);
+      i++;
+      setTimeout(typeChar, 20); // adjust speed here
+    } else if (end) {
+      document.getElementById("restart").style.display = 'inline';
     }
+  }
+
+  typeChar();
+}
 
     function restartGame() {
       player = 1;
