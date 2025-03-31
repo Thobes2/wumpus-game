@@ -156,7 +156,7 @@
     }
 
     function shootArrow() {
-      if (arrows <= 0) return triggerArrowPuzzle();
+      if (arrows <= 0) return triggerRiddle();
       const targetRoom = parseInt(document.getElementById("input").value.trim());
       arrows--;
       turns++;
@@ -189,18 +189,23 @@
       document.getElementById("input").value = '';
     }
 
-    function triggerArrowPuzzle() {
-      const number = Math.floor(Math.random() * 20) + 1;
-      const isEven = number % 2 === 0;
-      const riddle = `The glimmering runes whisper: "I am a number between 1 and 20. I am ${isEven ? 'even' : 'odd'}. Guess me, and I shall become an arrow."\n\nEnter your guess:`;
-      const guess = parseInt(prompt(riddle));
-      if (guess === number) {
-        arrows++;
-        setGameText(`✨ The runes glow brightly. You feel an arrow materialize in your quiver.\n\nYou now have ${arrows} arrow(s).`);
+    function triggerRiddle() {
+      const riddleText = [
+        "A magical rune flares to life in midair...",
+        "\"I am a three-digit number. My digits add to 9.",
+        "The first is twice the second. The third is 3.\"",
+        "",
+        "Type your answer and press OK."
+      ].join('\n');
+
+      const answer = prompt(riddleText);
+      if (answer === "423") {
+        arrows = 1;
+        updateHUD();
+        setGameText("The rune pulses with energy. An arrow materializes in your hand.");
       } else {
-        setGameText("The runes dim. You remain empty-handed.");
+        setGameText("The rune flickers and vanishes. No arrows. No mercy.");
       }
-      updateHUD();
     }
 
     function setGameText(text, end = false) {
@@ -230,5 +235,6 @@
       }, 800);
     }
   </script>
+
 </body>
 </html>
