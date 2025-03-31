@@ -140,6 +140,9 @@
     }
 
     function makeMove() {
+      
+      if (awaitingRiddleAnswer) return setGameText("Solve the riddle first or refresh to begin again.");
+
       const move = parseInt(document.getElementById("input").value.trim());
       const validMoves = map[player];
       if (isNaN(move)) return setGameText("The cave echoes back your nonsense. Try a valid room number.");
@@ -156,7 +159,11 @@
     }
 
     function shootArrow() {
-      if (arrows <= 0) return triggerRiddle();
+
+      if (awaitingRiddleAnswer) return setGameText("Solve the riddle first or refresh to begin again.");
+
+      if (arrows <= 0) return showRiddle();
+
       const targetRoom = parseInt(document.getElementById("input").value.trim());
       arrows--;
       turns++;
@@ -189,24 +196,49 @@
       document.getElementById("input").value = '';
     }
 
-    function triggerRiddle() {
-      const riddleText = [
-        "A magical rune flares to life in midair...",
-        "\"I am a three-digit number. My digits add to 9.",
-        "The first is twice the second. The third is 3.\"",
-        "",
-        "Type your answer and press OK."
-      ].join('\n');
+    let awaitingRiddleAnswer = false;
 
-      const answer = prompt(riddleText);
-      if (answer === "423") {
-        arrows = 1;
-        updateHUD();
-        setGameText("The rune pulses with energy. An arrow materializes in your hand.");
-      } else {
-        setGameText("The rune flickers and vanishes. No arrows. No mercy.");
-      }
-    }
+function showRiddle() {
+  const riddleText = [
+    "You are out of arrows!",
+    "",
+    "A glimmering rune emerges from the stone and speaks:",
+    "",
+    "“I am a three-digit number.",
+    "My digits add to 9.",
+    "The first is twice the second.",
+    "The third is 3.”",
+    "",
+    "Type your answer below and press 'Solve'."
+  ].join('\n');
+
+  document.getElementById("game").innerText = riddleText;
+  awaitingRiddleAnswer = true;
+
+  // Add a "Solve" button if not already present
+  if (!document.getElementById("solve-button")) {
+    const solveBtn = document.createElement("button");
+    solveBtn.id = "solve-button";
+    solveBtn.textContent = "Solve";
+    solveBtn.onclick = solveRiddle;
+    document.getElementById("game-wrapper").appendChild(solveBtn);
+  }
+}
+
+function solveRiddle() {
+  const input = document.getElementById("input").value.trim();
+  if (input === "423") {
+    document.getElementById("game").innerText = "⚡ The rune flares brightly...\n\nYou gain 1 arrow.";
+    arrows = 1;
+    updateHUD();
+  } else {
+    document.getElementById("game").innerText = "The rune fades into the stone. No arrows. No mercy.";
+  }
+  awaitingRiddleAnswer = false;
+  document.getElementById("input").value = '';
+  const solveBtn = document.getElementById("solve-button");
+  if (solveBtn) solveBtn.remove();
+}
 
     function setGameText(text, end = false) {
       document.getElementById("game").innerText = text;
