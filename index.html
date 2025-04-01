@@ -367,11 +367,11 @@ function setGameText(text, end = false, callback = null) {
 
 const h = haikus[Math.floor(Math.random() * haikus.length)];
   const trophy = { name, lines: h };
-  
+
   const stored = JSON.parse(localStorage.getItem("trophies") || "[]");
   stored.push(trophy);
   localStorage.setItem("trophies", JSON.stringify(stored));
-}
+
   const div = document.createElement("div");
   div.style = `
     width: 220px;
