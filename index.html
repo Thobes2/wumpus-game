@@ -197,11 +197,24 @@
           ].join('\n');
           setGameText(feastText, true);
           setTimeout(() => {
-  const playerName = prompt("You have won the Wumpus Feast! Enter your name to claim your trophy:");
-  if (playerName) {
-    addTrophy(playerName);
-  }
-}, 1000); // wait a moment to let the feast message display
+  const input = document.createElement("input");
+  input.placeholder = "Enter your name";
+  input.style.marginTop = "1em";
+
+  const button = document.createElement("button");
+  button.textContent = "Claim Trophy";
+  button.onclick = () => {
+    if (input.value.trim()) {
+      addTrophy(input.value.trim());
+      input.remove();
+      button.remove();
+    }
+  };
+
+  const gameWrapper = document.getElementById("game-wrapper");
+  gameWrapper.appendChild(input);
+  gameWrapper.appendChild(button);
+}, 2000);
         } else describeRoom();
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
@@ -321,18 +334,19 @@ function setGameText(text, end = false, callback = null) {
 
   const div = document.createElement("div");
   div.style = `
-    width: 200px;
-    height: 200px;
-    border: 2px solid black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-family: Georgia, serif;
-    padding: 1em;
-    box-sizing: border-box;
-  `;
+  width: 260px;
+  height: 160px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Georgia, serif;
+  padding: 1em;
+  box-sizing: border-box;
+  font-size: 0.9em;
+`;
   div.innerHTML = `<div><strong>${name}</strong></div>
     <div style="margin-top: 0.5em;">
       <div>${h[0]}</div>
@@ -344,8 +358,6 @@ function setGameText(text, end = false, callback = null) {
 
   </script>
 
-<h2 style="margin-top: 2em;">Trophy Room</h2>
-<div id="trophies" style="display: flex; flex-wrap: wrap; gap: 1em;"></div>
 
 </body>
 </html>
