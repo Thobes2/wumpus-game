@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Trophy Room</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background-color: #f5f1e6;
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 3em;
+      margin-bottom: 0.5em;
+    }
+    #trophies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
+      margin-top: 2em;
+    }
+    .trophy {
+      width: 220px;
+      height: 220px;
+      border: 2px solid black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: Georgia, serif;
+      padding: 1em;
+      box-sizing: border-box;
+      background-color: white;
+    }
+    button {
+      margin-top: 2em;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #111;
+      color: #eee;
+      border: none;
+      font-family: 'UnifrakturCook', cursive;
+    }
+    button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏆 Trophy Room</h1>
+  <div id="trophies"></div>
+  <button onclick="window.location.href='index.html'">← Back to Hunt</button>
+
+  <script>
+    const container = document.getElementById("trophies");
+    const trophies = JSON.parse(localStorage.getItem("trophies") || "[]");
+
+    trophies.forEach(t => {
+      const div = document.createElement("div");
+      div.className = "trophy";
+      div.innerHTML = `
+        <div><strong>${t.name}</strong></div>
+        <div style="margin-top: 0.5em;">
+          <div>${t.lines[0]}</div>
+          <div>${t.lines[1]}</div>
+          <div>${t.lines[2]}</div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
