@@ -54,9 +54,6 @@
       transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    <button onclick="window.location.href='trophy.html'">View Trophy Room</button>
-
-
     #rules {
       opacity: 1;
       transition: opacity 0.8s ease;
@@ -89,6 +86,7 @@
 
   <div id="start-screen">
     <button onclick="startGame()">Play</button>
+    <button onclick="window.location.href='trophy.html'">View Trophy Room</button>
   </div>
 
   <div id="game-wrapper" style="display: none;">
@@ -103,11 +101,6 @@
       <button id="solve-button" style="display:none;">Solve</button>
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
-  </div>
-
-  <div id="trophy-room" style="margin-top: 2em;">
-    <h2>Trophy Room</h2>
-    <div id="trophies" style="display: flex; flex-wrap: wrap; gap: 1em;"></div>
   </div>
 
   <script>
