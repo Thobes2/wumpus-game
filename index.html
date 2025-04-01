@@ -80,7 +80,7 @@
       <li><strong>Go</strong> to a room</li>
       <li><strong>Shoot</strong> an arrow into a room</li>
     </ul>
-    <p>If you enter the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you win. If you smell the Wumpus nearby, shoot an arrow before it's too late! But don't go postal; you only have 3 arrows.</p>
+    <p>If you enter the Wumpus’s room, you get eaten. If you shoot into the Wumpus’s room, you are served a glorious feast. If you smell the Wumpus nearby, shoot an arrow before it's too late! But don't go postal; you only have 3 arrows.</p>
   </div>
 
   <div id="start-screen">
@@ -99,6 +99,11 @@
       <button id="solve-button" style="display:none;">Solve</button>
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
+  </div>
+
+  <div id="trophy-room" style="margin-top: 2em;">
+    <h2>Trophy Room</h2>
+    <div id="trophies" style="display: flex; flex-wrap: wrap; gap: 1em;"></div>
   </div>
 
   <script>
@@ -180,7 +185,7 @@
             "",
             "🔥 Torches blaze to life as hidden doors open...",
             "🏺 Ancient murals glow with firelight.",
-            "🍖 The tribe emerges from the shadows, lifting you on their shoulders.",
+            "🍖 Cavern dwellers emerges from the shadows, lifting you on their shoulders.",
             "",
             "Tonight, you feast.",
             "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
@@ -191,6 +196,12 @@
             "(Click 'Restart Game' to hunt again.)"
           ].join('\n');
           setGameText(feastText, true);
+          setTimeout(() => {
+  const playerName = prompt("You have won the Wumpus Feast! Enter your name to claim your trophy:");
+  if (playerName) {
+    addTrophy(playerName);
+  }
+}, 1000); // wait a moment to let the feast message display
         } else describeRoom();
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
@@ -297,7 +308,44 @@ function setGameText(text, end = false, callback = null) {
         describeRoom();
       }, 800);
     }
+
+    function addTrophy(name) {
+  const haikus = [
+    ["Beast of ancient stone", "Fell to arrow, swift and true", "Now the cave is still"],
+    ["Eyes glowed in the dark", "But you did not flinch nor flee", "Victory was yours"],
+    ["Wumpus breath was near", "You aimed through the stinking mist", "Now the cave is safe"],
+    ["Deep beneath the earth", "Hunter faced the ancient foe", "Silence echoes now"],
+    ["Through tunnels unknown", "A lone arrow found its mark", "Legends never die"]
+  ];
+  const h = haikus[Math.floor(Math.random() * haikus.length)];
+
+  const div = document.createElement("div");
+  div.style = `
+    width: 200px;
+    height: 200px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Georgia, serif;
+    padding: 1em;
+    box-sizing: border-box;
+  `;
+  div.innerHTML = `<div><strong>${name}</strong></div>
+    <div style="margin-top: 0.5em;">
+      <div>${h[0]}</div>
+      <div>${h[1]}</div>
+      <div>${h[2]}</div>
+    </div>`;
+  document.getElementById("trophies").appendChild(div);
+}
+
   </script>
+
+<h2 style="margin-top: 2em;">Trophy Room</h2>
+<div id="trophies" style="display: flex; flex-wrap: wrap; gap: 1em;"></div>
 
 </body>
 </html>
