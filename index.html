@@ -73,6 +73,7 @@
 </head>
 <body>
   <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
+  <p style="text-align: center; font-style: italic; margin-top: -0.5em;">And Win a Personalized Victory Haiku</p>
 
   <div id="rules">
     <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is mysterious.</p>
@@ -210,9 +211,14 @@
     }
   };
 
-  const gameWrapper = document.getElementById("game-wrapper");
-  gameWrapper.appendChild(input);
-  gameWrapper.appendChild(button);
+  const trophyInputWrapper = document.createElement("div");
+trophyInputWrapper.style.marginTop = "1em";
+
+trophyInputWrapper.appendChild(input);
+trophyInputWrapper.appendChild(button);
+
+document.getElementById("game-wrapper").appendChild(trophyInputWrapper);
+
 }, 2000);
         } else describeRoom();
       } else {
@@ -375,18 +381,20 @@ const h = haikus[Math.floor(Math.random() * haikus.length)];
   // Create the DOM element for immediate preview
   const div = document.createElement("div");
   div.style = `
-    width: 220px;
-    height: 120px;
-    border: 2px solid black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-family: Georgia, serif;
-    padding: 1em;
-    box-sizing: border-box;
-    margin-top: 1em;
+  width: 220px;
+  height: 120px;
+  background-color: #222; /* Dark grey */
+  color: #fff;            /* White text */
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Georgia, serif;
+  padding: 1em;
+  box-sizing: border-box;
+  margin-top: 1em;
   `;
   div.innerHTML = `
     <div style="line-height: 1.4;">
