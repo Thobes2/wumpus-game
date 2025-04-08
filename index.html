@@ -322,50 +322,48 @@ function setGameText(text, end = false, callback = null) {
     }
 
     function addTrophy(name) {
-      const haikus = [
-  [`${name} stood alone`, "The beast growled in the shadows", "Silence answered back"],
-  [`Eyes met in the dark`, `${name} did not flinch or flee`, "Now the lair is still"],
-  [`The bowstring whispers`, `${name} loosed the final shot`, "Wumpus breath no more"],
-  [`Foul breath filled the cave`, "But ${name}'s aim did not shake", "The shriek sealed their fate"],
-  [`Tunnels deep and cold`, `${name}'s fire did not go out`, "Legends spark below"],
-  [`Blood did not run red`, "Only courage filled the void", `${name} walks alone`],
-  [`Sharp as ancient stone`, `${name}'s arrow found the heart`, "Wumpus tales are told"],
-  [`The old runes foretold`, "One brave soul would end the curse", `${name} wore that fate`],
-  [`From echo to hush`, "A single shot made it so", `${name} now is sung`],
-  [`Twisting tunnels call`, `${name} answered with a flame`, "Now no beast remains"],
-
-  [`Wumpus scent was strong`, `${name} pressed into the gloom`, "Victory was near"],
-  [`No feast for the beast`, "Only one would leave the dark", "That one was ${name}"],
-  [`Underneath the rock`, `${name} found the sleeping death`, "And struck true at last"],
-  [`Legend marks the cave`, "Scratched in blood and hunter’s name", `It reads only: ${name}`],
-  [`Shadows danced on walls`, "But ${name} walked through the fire", "A hunter reborn"],
-  [`The tribe spoke in hush`, "“It is done,” said one with pride", `${name} brought them peace`],
-  [`A tunnel of fate`, "Whispers followed every step", "And ${name} listened"],
-  [`Arrow loosed in fear`, "But ${name} aimed past the dread", "Into beating heart"],
-  [`The beast stood so still`, "As if it knew ${name}'s name", "The end was quiet"],
-  [`The torch flickered once`, "Then ${name} let silence fall", "And the cave was free"],
-
-  [`Bats shrieked, dust collapsed`, "Yet ${name}'s breath did not break", "Steel nerves sealed the fate"],
-  [`Beneath cursed stone`, `${name} walked with ancient fire`, "And ended the howl"],
-  [`One hunter, one shot`, "The darkness swallowed the light", `${name} fired the dawn`],
-  [`Not a cry, just wind`, `${name} took what could not last`, "Beast, breath, myth, and fear"],
-  [`The mark was unseen`, "But ${name} read ancient signs", "And did not miss fate"],
-  [`Room to room they crept`, "The beast smelled of blood and time", `${name} smelled of hope`],
-  [`A torch in the deep`, `${name} did not falter once`, "Even stars looked down"],
-  [`Old bones warned too late`, "The Wumpus dreamed of hunger", `${name} dreamed of flame`],
-  [`Feast lit by warm fire`, "But ${name} came through the cold", "With legend in tow"],
-  [`It heard the whisper`, "“You cannot run from ${name}”", "And it knew the end"],
-
-  [`Silk cobwebs and rot`, "But ${name}'s boots did not pause", "The path was forward"],
-  [`The final riddle`, "Was not carved in stone or runes", "It was carved by ${name}"],
-  [`Wind held its own breath`, "Waiting for one name to rise", "It was yours, ${name}"],
-  [`Bones long since faded`, "Yet the cave remembers still", `${name} and one cry`],
-  [`The howl echoed far`, "But ${name}'s name echoed back", "Stronger, deeper still"],
-  [`The cave swallowed tales`, "But not this one carved by light", `By the hand of ${name}`],
-  [`Rain fell overhead`, "But below, the Wumpus fell", "And ${name} stood dry"],
-  [`Not all tales grow old`, "Some are forged in fire and stone", `This one starts with ${name}`],
-  [`From roots deep in dark`, "Rose the silence of the beast", "And ${name}'s triumph"]
-];
+  const haikus = [
+    [`${name} stood alone`, `The beast growled in the shadows`, `Silence answered back`],
+    [`Eyes met in the dark`, `${name} did not flinch or flee`, `Now the lair is still`],
+    [`The bowstring whispers`, `${name} loosed the final shot`, `Wumpus breath no more`],
+    [`Foul breath filled the cave`, `But ${name}'s aim did not shake`, `The shriek sealed their fate`],
+    [`Tunnels deep and cold`, `${name}'s fire did not go out`, `Legends spark below`],
+    [`Blood did not run red`, `Only courage filled the void`, `${name} walks alone`],
+    [`Sharp as ancient stone`, `${name}'s arrow found the heart`, `Wumpus tales are told`],
+    [`The old runes foretold`, `One brave soul would end the curse`, `${name} wore that fate`],
+    [`From echo to hush`, `A single shot made it so`, `${name} now is sung`],
+    [`Twisting tunnels call`, `${name} answered with a flame`, `Now no beast remains`],
+    [`Wumpus scent was strong`, `${name} pressed into the gloom`, `Victory was near`],
+    [`No feast for the beast`, `Only one would leave the dark`, `That one was ${name}`],
+    [`Underneath the rock`, `${name} found the sleeping death`, `And struck true at last`],
+    [`Legend marks the cave`, `Scratched in blood and hunter’s name`, `It reads only: ${name}`],
+    [`Shadows danced on walls`, `But ${name} walked through the fire`, `A hunter reborn`],
+    [`The tribe spoke in hush`, `“It is done,” said one with pride`, `${name} brought them peace`],
+    [`A tunnel of fate`, `Whispers followed every step`, `And ${name} listened`],
+    [`Arrow loosed in fear`, `But ${name} aimed past the dread`, `Into beating heart`],
+    [`The beast stood so still`, `As if it knew ${name}'s name`, `The end was quiet`],
+    [`The torch flickered once`, `Then ${name} let silence fall`, `And the cave was free`],
+    [`Bats shrieked, dust collapsed`, `Yet ${name}'s breath did not break`, `Steel nerves sealed the fate`],
+    [`Beneath cursed stone`, `${name} walked with ancient fire`, `And ended the howl`],
+    [`One hunter, one shot`, `The darkness swallowed the light`, `${name} fired the dawn`],
+    [`Not a cry, just wind`, `${name} took what could not last`, `Beast, breath, myth, and fear`],
+    [`The mark was unseen`, `But ${name} read ancient signs`, `And did not miss fate`],
+    [`Room to room they crept`, `The beast smelled of blood and time`, `${name} smelled of hope`],
+    [`A torch in the deep`, `${name} did not falter once`, `Even stars looked down`],
+    [`Old bones warned too late`, `The Wumpus dreamed of hunger`, `${name} dreamed of flame`],
+    [`Feast lit by warm fire`, `But ${name} came through the cold`, `With legend in tow`],ß
+    [`It heard the whisper`, `“You cannot run from ${name}”`, `And it knew the end`],
+    [`Silk cobwebs and rot`, `But ${name}'s boots did not pause`, `The path was forward`],
+    [`The final riddle`, `Was not carved in stone or runes`, `It was carved by ${name}`],
+    [`Wind held its own breath`, `Waiting for one name to rise`, `It was yours, ${name}`],
+    [`Bones long since faded`, `Yet the cave remembers still`, `${name} and one cry`],
+    [`The howl echoed far`, `But ${name}'s name echoed back`, `Stronger, deeper still`],
+    [`The cave swallowed tales`, `But not this one carved by light`, `By the hand of ${name}`],
+    [`Rain fell overhead`, `But below, the Wumpus fell`, `And ${name} stood dry`],
+    [`Not all tales grow old`, `Some are forged in fire and stone`, `This one starts with ${name}`],
+    [`From roots deep in dark`, `Rose the silence of the beast`, `And ${name}'s triumph`]
+  ];
+}ß
 
 const h = haikus[Math.floor(Math.random() * haikus.length)];
   const trophy = { name, lines: h };
