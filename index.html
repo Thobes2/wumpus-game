@@ -327,8 +327,8 @@ function setGameText(text, end = false, callback = null) {
       }, 800);
     }
 
-    function addTrophy(name) {
-  const haikus = [
+    async function addTrophy(name) {
+      const haikus = [
     [`${name} stood alone`, `The beast growled in the shadows`, `Silence answered back`],
     [`Eyes met in the dark`, `${name} did not flinch or flee`, `Now the lair is still`],
     [`The bowstring whispers`, `${name} loosed the final shot`, `Wumpus breath no more`],
@@ -370,47 +370,63 @@ function setGameText(text, end = false, callback = null) {
     [`From roots deep in dark`, `Rose the silence of the beast`, `And ${name}'s triumph`]
   ];
 
-const h = haikus[Math.floor(Math.random() * haikus.length)];
-  const trophy = { name, lines: h };
+  const h = haikus[Math.floor(Math.random() * haikus.length)];
 
-  // Save to localStorage
-  const stored = JSON.parse(localStorage.getItem("trophies") || "[]");
-  stored.push(trophy);
-  localStorage.setItem("trophies", JSON.stringify(stored));
+// Save to Supabase
+const { error } = await supabase.from('trophies').insert([{
+  player_name: name,
+  line1: h[0],
+  line2: h[1],
+  line3: h[2],
+}]);
 
-  // Create the DOM element for immediate preview
-  const div = document.createElement("div");
-  div.style = `
+if (error) {
+  console.error("Failed to save trophy:", error);
+  alert("Oops! Couldn't save your trophy. Try again.");
+  return;
+}
+
+// Optional: show it immediately on the current screen
+const div = document.createElement("div");
+div.style = `
   width: 220px;
   height: 120px;
-  background-color: #222; /* Dark grey */
-  color: #fff;            /* White text */
-  border: 2px solid #000;
+  border: 2px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-family: Georgia, serif;
+  background-color: #333;
+  color: white;
   padding: 1em;
   box-sizing: border-box;
   margin-top: 1em;
-  `;
-  div.innerHTML = `
-    <div style="line-height: 1.4;">
-      <div>${h[0]}</div>
-      <div>${h[1]}</div>
-      <div>${h[2]}</div>
-    </div>
-  `;
-
-  const trophySection = document.getElementById("trophies");
-  if (trophySection) {
-    trophySection.appendChild(div); // Show it if you're staying on this page
-  }
+`;
+div.innerHTML = `
+  <div style="line-height: 1.4;">
+    <div>${h[0]}</div>
+    <div>${h[1]}</div>
+    <div>${h[2]}</div>
+  </div>
+`;
+const trophySection = document.getElementById("trophies");
+if (trophySection) {
+  trophySection.appendChild(div);
+}
 }
 
   </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o
+';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
 
 
 </body>

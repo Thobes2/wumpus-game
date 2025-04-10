@@ -73,20 +73,37 @@
   <button onclick="window.location.href='index.html'">Back to Hunt</button>
 
   <script>
-    const stored = JSON.parse(localStorage.getItem("trophies") || "[]");
-    const container = document.getElementById("trophies");
+    const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o
+';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    stored.forEach(trophy => {
+  async function loadTrophies() {
+    const { data: trophies, error } = await supabase
+      .from('trophies')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error loading trophies:', error);
+      return;
+    }
+
+    const container = document.getElementById("trophies");
+    trophies.forEach(trophy => {
       const div = document.createElement("div");
       div.className = "trophy";
       div.innerHTML = `
-        <div class="trophy-name">${trophy.name}</div>
-        <div>${trophy.lines[0]}</div>
-        <div>${trophy.lines[1]}</div>
-        <div>${trophy.lines[2]}</div>
+        <div class="trophy-name">${trophy.player_name}</div>
+        <div>${trophy.line1}</div>
+        <div>${trophy.line2}</div>
+        <div>${trophy.line3}</div>
       `;
       container.appendChild(div);
     });
+  }
+
+  loadTrophies();
   </script>
 </body>
 </html>
