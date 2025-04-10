@@ -123,17 +123,18 @@
       if (playButton) {
         console.log("✅ Play button found");
         playButton.addEventListener("click", () => {
-          console.log("🟢 Play button clicked");
-          const rules = document.getElementById("rules");
-          rules.classList.add("hidden");
-          setTimeout(() => {
-            rules.style.display = "none";
-            document.getElementById("game-wrapper").style.display = "block";
-            updateHUD(); // assumes this is declared elsewhere
-            describeRoom(); // assumes this is declared elsewhere
-            document.getElementById("input").focus();
-          }, 800);
-        });
+  console.log("🟢 Play button clicked");
+
+  // Hide both UI elements completely
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("rules").style.display = "none";
+
+  // Show the game UI
+  document.getElementById("game-wrapper").style.display = "block";
+  updateHUD();
+  describeRoom();
+  document.getElementById("input").focus();
+});
       } else {
         console.error("❌ #play-button not found in DOM.");
       }
