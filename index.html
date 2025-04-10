@@ -74,6 +74,13 @@
 <body>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+  <script>
+    const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
+  
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
   <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
   <p style="text-align: left; font-style: italic; margin-top: -0.5em;">And Win a Personalized Victory Haiku</p>
 
@@ -377,7 +384,7 @@ function setGameText(text, end = false, callback = null) {
   const h = haikus[Math.floor(Math.random() * haikus.length)];
 
   // Save to Supabase
-  const { data, error } = await supabase.from('trophies').insert([
+  const { data, error } = await supabaseClient.from('trophies').insert([
     {
       player_name: name,
       line1: h[0],
@@ -429,12 +436,6 @@ function setGameText(text, end = false, callback = null) {
   </script>
 
 
-<script>
-  const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
-
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
 
 
 </body>
