@@ -28,19 +28,21 @@
     }
 
     .trophy {
-      width: 220px;
-      height: 120px;
-      border: 2px solid black;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-family: Georgia, serif;
-      padding: 1em;
-      box-sizing: border-box;
-      background-color: #fff;
-    }
+  width: 220px;
+  height: 120px;
+  border: 2px solid black;
+  background-color: #333; /* dark grey background */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Georgia, serif;
+  padding: 1em;
+  box-sizing: border-box;
+  font-size: 0.85em; /* 👈 smaller text */
+}
 
     .trophy-name {
       font-weight: bold;
@@ -90,17 +92,18 @@
     }
 
     const container = document.getElementById("trophies");
-    trophies.forEach(trophy => {
-      const div = document.createElement("div");
-      div.className = "trophy";
-      div.innerHTML = `
-        <div class="trophy-name">${trophy.player_name}</div>
-        <div>${trophy.line1}</div>
-        <div>${trophy.line2}</div>
-        <div>${trophy.line3}</div>
-      `;
-      container.appendChild(div);
-    });
+
+trophies.forEach(trophy => {
+  const div = document.createElement("div");
+  div.className = "trophy";
+  div.innerHTML = `
+    <div class="trophy-name">${trophy.player_name}</div>
+    <div class="trophy-line">${trophy.line1}</div>
+    <div class="trophy-line">${trophy.line2}</div>
+    <div class="trophy-line">${trophy.line3}</div>
+  `;
+  container.appendChild(div);
+});
   }
 
   loadTrophies();
