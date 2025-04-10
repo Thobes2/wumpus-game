@@ -108,8 +108,12 @@
 
   <div id="trophies"></div>
 
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script defer>
+
+
+
+  
 
   
 
@@ -448,13 +452,11 @@ function startGame() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const playButton = document.getElementById("play-button");
-  if (playButton) {
-    playButton.addEventListener("click", startGame);
-  } else {
-    console.error("❌ Could not find #play-button element!");
-  }
-});
+    const playButton = document.getElementById("play-button");
+    if (playButton) {
+      playButton.addEventListener("click", startGame);
+    }
+  });
 </script>
  
 </body>
