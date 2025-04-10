@@ -110,9 +110,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script defer>
-
-
-const playButton = document.getElementById("play-button");
+  console.log("📦 Script loaded via defer");
+  
+  // Now this works fine because the script runs *after* the DOM is parsed
+  const playButton = document.getElementById("play-button");
   if (playButton) {
     playButton.addEventListener("click", () => {
       console.log("🟢 Play button clicked");
@@ -129,6 +130,7 @@ const playButton = document.getElementById("play-button");
   } else {
     console.error("❌ #play-button not found in DOM.");
   }
+  
 
   
 
