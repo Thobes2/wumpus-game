@@ -88,7 +88,7 @@
   </div>
 
   <div id="start-screen">
-    <button onclick="startGame()">Play</button>
+    <button id="play-button">Play</button>
     <button onclick="window.location.href='trophy.html'">View Trophy Room</button>
   </div>
 
@@ -435,7 +435,9 @@ function setGameText(text, end = false, callback = null) {
 }
 }
 
-
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("play-button").addEventListener("click", startGame);
+});
 </script>
  
 </body>
