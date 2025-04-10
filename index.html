@@ -109,32 +109,35 @@
   <div id="trophies"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script defer>
-  console.log("📦 Script loaded via defer");
+  <script>
+    // Supabase init should be outside DOMContentLoaded if you need it elsewhere
+    const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   
-  // Now this works fine because the script runs *after* the DOM is parsed
-  const playButton = document.getElementById("play-button");
-  if (playButton) {
-    playButton.addEventListener("click", () => {
-      console.log("🟢 Play button clicked");
-      const rules = document.getElementById("rules");
-      rules.classList.add("hidden");
-      setTimeout(() => {
-        rules.style.display = "none";
-        document.getElementById("game-wrapper").style.display = "block";
-        updateHUD();
-        describeRoom();
-        document.getElementById("input").focus();
-      }, 800);
+    // Only DOM interaction needs to wait for the DOM
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("📦 DOM fully loaded");
+  
+      const playButton = document.getElementById("play-button");
+      if (playButton) {
+        console.log("✅ Play button found");
+        playButton.addEventListener("click", () => {
+          console.log("🟢 Play button clicked");
+          const rules = document.getElementById("rules");
+          rules.classList.add("hidden");
+          setTimeout(() => {
+            rules.style.display = "none";
+            document.getElementById("game-wrapper").style.display = "block";
+            updateHUD(); // assumes this is declared elsewhere
+            describeRoom(); // assumes this is declared elsewhere
+            document.getElementById("input").focus();
+          }, 800);
+        });
+      } else {
+        console.error("❌ #play-button not found in DOM.");
+      }
     });
-  } else {
-    console.error("❌ #play-button not found in DOM.");
-  }
-  
-
-  
-
-
 const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
