@@ -61,6 +61,8 @@
       const { data, error } = await supabase.from('trophies').select('*').order('id', { ascending: false });
 
       if (error) {
+        console.log("🏅 Loaded trophies:", data);
+
         console.error("❌ Failed to fetch trophies:", error);
         return;
       }
