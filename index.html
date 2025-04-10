@@ -112,8 +112,23 @@
   <script defer>
 
 
-
-  
+const playButton = document.getElementById("play-button");
+  if (playButton) {
+    playButton.addEventListener("click", () => {
+      console.log("🟢 Play button clicked");
+      const rules = document.getElementById("rules");
+      rules.classList.add("hidden");
+      setTimeout(() => {
+        rules.style.display = "none";
+        document.getElementById("game-wrapper").style.display = "block";
+        updateHUD();
+        describeRoom();
+        document.getElementById("input").focus();
+      }, 800);
+    });
+  } else {
+    console.error("❌ #play-button not found in DOM.");
+  }
 
   
 
@@ -439,24 +454,7 @@ function setGameText(text, end = false, callback = null) {
 }
 }
 
-function startGame() {
-  document.getElementById("start-screen").style.display = "none";
-  const rules = document.getElementById("rules");
-  rules.classList.add("hidden");
-  setTimeout(() => {
-    rules.style.display = "none";
-    document.getElementById("game-wrapper").style.display = "block";
-    updateHUD();
-    describeRoom();
-  }, 800);
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    const playButton = document.getElementById("play-button");
-    if (playButton) {
-      playButton.addEventListener("click", startGame);
-    }
-  });
 </script>
  
 </body>
