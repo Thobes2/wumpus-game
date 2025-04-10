@@ -384,7 +384,7 @@ function setGameText(text, end = false, callback = null) {
   const h = haikus[Math.floor(Math.random() * haikus.length)];
 
   // Save to Supabase
-  const { data, error } = await supabaseClient.from('trophies').insert([
+  const { data, error } = await supabase.from('trophies').insert([
     {
       player_name: name,
       line1: h[0],
