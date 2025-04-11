@@ -53,38 +53,41 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    // ✅ Initialize Supabase client FIRST
-    const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
-    const SUPABASE_ANON_KEY = 'your_anon_key_here';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    window.addEventListener('DOMContentLoaded', async () => {
+      const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
   
-    // ✅ Then use supabase
-    async function loadTrophies() {
-      const { data, error } = await supabase.from('trophies').select('*').order('id', { ascending: false });
+      // ✅ Ensure Supabase is available before calling this
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   
-      if (error) {
-        console.error("❌ Failed to fetch trophies:", error);
-        return;
+      async function loadTrophies() {
+        const { data, error } = await supabaseClient
+          .from('trophies')
+          .select('*')
+          .order('id', { ascending: false });
+  
+        if (error) {
+          console.error("❌ Failed to fetch trophies:", error);
+          return;
+        }
+  
+        const grid = document.getElementById("trophy-grid");
+        data.forEach(t => {
+          const div = document.createElement("div");
+          div.className = "trophy";
+          div.innerHTML = `
+            <div style="line-height: 1.4;">
+              <div>${t.line1}</div>
+              <div>${t.line2}</div>
+              <div>${t.line3}</div>
+            </div>
+          `;
+          grid.appendChild(div);
+        });
       }
   
-      console.log("✅ Trophy data:", data);
-  
-      const grid = document.getElementById("trophy-grid");
-      data.forEach(t => {
-        const div = document.createElement("div");
-        div.className = "trophy";
-        div.innerHTML = `
-          <div style="line-height: 1.4;">
-            <div>${t.line1}</div>
-            <div>${t.line2}</div>
-            <div>${t.line3}</div>
-          </div>
-        `;
-        grid.appendChild(div);
-      });
-    }
-  
-    loadTrophies();
+      await loadTrophies();
+    });
   </script>
 
 </body>
