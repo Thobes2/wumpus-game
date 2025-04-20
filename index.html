@@ -38,12 +38,26 @@ p.subtitle {
       transition: color 0.2s ease-in-out;
     }
     #game {
-      white-space: pre-wrap;
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 1em;
-      margin-top: 1em;
-      min-height: 120px;
+  padding: 1em;
+  background: #fff;
+  border: 1px solid #ccc;
+  overflow-y: auto;
+  max-height: 70vh;
+
+  .game-text p {
+  margin: 1em 0;
+  line-height: 1.6;
+}
+
+.game-text img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1.5em 0;
+  border-radius: 4px;
+}
+
+}
     }
     input, button {
       font-size: 1em;
@@ -147,12 +161,7 @@ p.subtitle {
   border-color: #666;
 }
 
-#room-image-container img,
-#game,
-#hud {
-  width: 100%;
-  box-sizing: border-box;
-}
+
 
 
 #room-image {
@@ -201,28 +210,36 @@ p.subtitle {
     <button id="play-button">Play</button>
     <button onclick="window.location.href='trophy.html'">View Trophy Room</button>
   </div>
-
+  
   <div id="game-wrapper" style="display: none;">
-
-    <div id="room-image-container" style="text-align:center; margin-bottom: 1em;">
-      <img id="room-image" src="">
-    </div>
-
-    <pre id="game"></pre>
+  
+    <!-- Streaming narrative text + images -->
+    <div id="game-stream" style="
+      max-height: 65vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      padding-right: 1em;
+      margin-bottom: 1em;
+    "></div>
+  
+    <!-- HUD (room, arrows, turns) -->
     <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
       Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span>
     </div>
-    <div style="margin-top: 1em;">
-      <input type="text" id="input" placeholder="Enter room #...">
+  
+    <!-- Input and action buttons -->
+    <div style="margin-top: 1em; display: flex; flex-wrap: wrap; gap: 0.5em;">
+      <input type="text" id="input" placeholder="Enter room #..." style="flex: 1 1 auto; min-width: 100px;">
       <button id="go-button">Go</button>
       <button id="shoot-button">Shoot</button>
       <button id="solve-button" style="display:none;">Solve</button>
-      <button id="restart" style="display:none;">Restart Game</button>   
-      
+      <button id="restart" style="display:none;">Restart Game</button>
     </div>
+  
   </div>
-
-</div> 
+  
 
   <div id="trophies"></div>
 
@@ -423,82 +440,74 @@ Object.values(roomDescriptions).forEach(desc => {
       document.getElementById("hud-turns").innerText = turns;
     }
 
-    function describeRoom() {
+    function appendNarrativeBlock({ text = '', image = '' }) {
+  const stream = document.getElementById("game-stream");
+
+  const wrapper = document.createElement("div");
+  wrapper.style.width = "100%";
+  wrapper.style.marginBottom = "1.5em";
+  wrapper.style.boxSizing = "border-box";
+
+  if (image) {
+    const img = document.createElement("img");
+    img.src = image;
+    img.style.width = "100%";
+    img.style.borderRadius = "8px";
+    img.style.marginBottom = "0.5em";
+    img.style.objectFit = "cover";
+    img.style.maxHeight = "360px";
+    wrapper.appendChild(img);
+  }
+
+  if (text) {
+    const paragraph = document.createElement("p");
+    paragraph.innerText = text;
+    paragraph.style.fontSize = "1em";
+    paragraph.style.lineHeight = "1.6";
+    paragraph.style.background = "#fff";
+    paragraph.style.padding = "1em";
+    paragraph.style.border = "1px solid #ccc";
+    paragraph.style.borderRadius = "8px";
+    paragraph.style.whiteSpace = "pre-wrap";
+    wrapper.appendChild(paragraph);
+  }
+
+  stream.appendChild(wrapper);
+
+  setTimeout(() => {
+    stream.scrollTop = stream.scrollHeight;
+  }, 50);
+}
+
+
+
+
+function describeRoom() {
   const desc = roomDescriptions[player];
   const flavor = desc.flavor;
   const sense = desc.sense;
   const image = desc.image;
 
-  const imageEl = document.getElementById("room-image"); // ✅ FIXED HERE
-
-  const output = [
+  const text = [
     `You step into ${flavor}.`,
     sense,
     `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
   ];
 
   if (map[player].includes(wumpus)) {
-    output.push("A foul stench creeps through the stone... the Wumpus is near.");
+    text.push("A foul stench creeps through the stone... the Wumpus is near.");
   }
 
-  if (image) {
-    imageEl.style.opacity = 0;
-    imageEl.src = image;
-    imageEl.style.display = "block";
-
-    setTimeout(() => {
-      imageEl.style.opacity = 1;
-      setTimeout(() => {
-        setGameText(output.join('\n'));
-      }, 300);
-    }, 50);
-  } else {
-    imageEl.style.display = "none";
-    setGameText(output.join('\n'));
-  }
+  appendNarrativeBlock({
+    image: image || null,
+    text: text.join("\n")
+  });
 }
-    
 
-function makeMove() {
-  if (awaitingRiddleAnswer) return setGameText("Solve the riddle first or refresh to begin again.");
-
-  const move = parseInt(document.getElementById("input").value.trim());
-  const validMoves = map[player];
-
-  if (isNaN(move)) {
-    return setGameText("The cave echoes back your nonsense. Try a valid room number.");
-  }
-
-  if (validMoves.includes(move)) {
-    player = move;
-    turns++;
-    updateHUD();
-
-    if (player === wumpus) {
-      const imageEl = document.getElementById("room-image");
-      imageEl.src = imageAttack;
-      imageEl.style.opacity = 0;
-      imageEl.style.display = "block";
-
-      setTimeout(() => {
-        imageEl.style.opacity = 1;
-        setTimeout(() => {
-          setGameText("You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!", true);
-        }, 300);
-      }, 50);
-    } else {
-      describeRoom();
-    }
-  } else {
-    setGameText(`A stone wall blocks your path.\nYou remain in room ${player}.\nTunnels lead to: ${validMoves.join(', ')}`);
-  }
-
-  document.getElementById("input").value = '';
-}
 
       
     function shootArrow() {
-  if (awaitingRiddleAnswer) return setGameText("Solve the riddle first or refresh to begin again.");
+  if (awaitingRiddleAnswer) return appendNarrativeBlock({ text: "Solve the riddle first or refresh to begin again."});
 
   if (arrows <= 0) return showRiddle();
 
@@ -508,7 +517,7 @@ function makeMove() {
   updateHUD();
 
   if (isNaN(targetRoom)) {
-    return setGameText("Your hand trembles. Aim at a real room, adventurer.");
+    return appendNarrativeBlock({ text: "Your hand trembles. Aim at a real room, adventurer." });
   }
 
   if (map[player].includes(targetRoom)) {
@@ -574,7 +583,7 @@ button.onclick = () => {
     }
 
   } else {
-    setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
+    appendNarrativeBlock({ text: `Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}` });
   }
 
   document.getElementById("input").value = '';
@@ -595,9 +604,7 @@ function showRiddle() {
   currentRiddle = riddles[Math.floor(Math.random() * riddles.length)];
   awaitingRiddleAnswer = true;
 
-  setGameText(
-    `❓ You are out of arrows...\n\nA disembodied voice whispers:\n“${currentRiddle.question}”\n\nType your answer and press "Solve".`
-  );
+  appendNarrativeBlock({ text: `❓ You are out of arrows...\n\nA disembodied voice whispers:\n“${currentRiddle.question}”\n\nType your answer and press "Solve".` });
 
   const solveButton = document.getElementById("solve-button");
   solveButton.style.display = "inline";
@@ -615,35 +622,14 @@ function checkRiddleAnswer() {
     document.getElementById("solve-button").style.display = "none";
     inputEl.value = '';
     updateHUD();
-    setGameText("✅ The riddle has been solved.\nA magical arrow materializes in your quiver.");
+    appendNarrativeBlock({ text: "✅ The riddle has been solved.\nA magical arrow materializes in your quiver."});
   } else {
-    setGameText("❌ The riddle answer is wrong.\nThe cave remains silent.\nYou cannot act again.");
+    appendNarrativeBlock({ text: "❌ The riddle answer is wrong.\nThe cave remains silent.\nYou cannot act again."});
     awaitingRiddleAnswer = true; // permanently blocks further actions
     document.getElementById("solve-button").style.display = "none";
   }
 }
 
-
-
-
-function setGameText(text, end = false, callback = null) {
-  const gameBox = document.getElementById("game");
-  gameBox.innerText = "";
-
-  let i = 0;
-  function typeChar() {
-    if (i < text.length) {
-      gameBox.innerText += text.charAt(i);
-      i++;
-      setTimeout(typeChar, 20);
-    } else {
-      if (end) document.getElementById("restart").style.display = 'inline';
-      if (callback) callback();
-    }
-  }
-
-  typeChar();
-}
 
 function restartGame() {
   console.log("🔄 Restarting game...");
@@ -658,11 +644,9 @@ function restartGame() {
   document.getElementById("restart").style.display = 'none';
   document.getElementById("input").value = '';
 
-  // 🧹 Remove old trophy
-  const trophyWrapper = document.getElementById("trophy-wrapper");
-  if (trophyWrapper) {
-    trophyWrapper.remove();
-  }
+  // 🧹 Clear chat-like game stream
+  const stream = document.getElementById("game-stream");
+  stream.innerHTML = '';
 
   updateHUD();
   describeRoom();
