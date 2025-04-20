@@ -95,14 +95,16 @@ p.subtitle {
 
 .trophy-button {
   height: 2.4em;
-  padding: 0.4em 1em;
+  padding: 0.25em 0.75em;
   font-size: 1em;
   cursor: pointer;
-  margin-top: 1em;
   background-color: #111;
   color: #ccc;
   border: 2px solid #333;
-  font-family: 'UnifrakturCook', cursive;
+  font-family: Georgia, serif; /* <- NOT UnifrakturCook */
+  vertical-align: middle;
+  box-sizing: border-box;
+  margin-top: 1em;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -522,13 +524,15 @@ input.className = "trophy-input";
 const button = document.createElement("button");
 button.textContent = "Claim Trophy";
 button.className = "trophy-button";
-        button.onclick = () => {
-          if (input.value.trim()) {
-            addTrophy(input.value.trim());
-            input.remove();
-            button.remove();
-          }
-        };
+
+button.onclick = () => {
+  const name = input.value.trim();
+  if (name) {
+    addTrophy(name);
+    input.remove();
+    button.remove();
+  }
+};
 
         const trophyInputWrapper = document.createElement("div");
         trophyInputWrapper.style.marginTop = "1em";
