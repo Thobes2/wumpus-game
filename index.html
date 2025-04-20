@@ -122,9 +122,8 @@ p.subtitle {
 
 
   <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
-  <p style="text-align: left; font-style: italic; font-size: 1.2em; margin-top: -0.5em;">
-    <p class="subtitle">And Win a Personalized Victory Haiku</p>
-
+  <p class="subtitle" style="text-align: left; font-style: italic; font-size: 1.2em; margin-top: -0.5em;">
+    And Win a Personalized Victory Haiku
   </p>
   <div id="rules">
     <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is mysterious.</p>
@@ -153,10 +152,11 @@ p.subtitle {
     </div>
     <div style="margin-top: 1em;">
       <input type="text" id="input" placeholder="Enter room #...">
-      <button onclick="makeMove()">Go</button>
-      <button onclick="shootArrow()">Shoot</button>
+      <button id="go-button">Go</button>
+      <button id="shoot-button">Shoot</button>
       <button id="solve-button" style="display:none;">Solve</button>
-      <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
+      <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>      
+      
     </div>
   </div>
 
@@ -166,8 +166,17 @@ p.subtitle {
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
+
+let awaitingRiddleAnswer = false;
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 DOM fully loaded");
+
+
+  document.getElementById("go-button").addEventListener("click", makeMove);
+
+  document.getElementById("shoot-button").addEventListener("click", shootArrow);
+
 
   const imageAttack = "https://static.wixstatic.com/media/8eeb94_c6dd036757714e85861d06de5344762a~mv2.jpg";
   const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe5ea60a8ff33f0c~mv2.jpg";
@@ -506,6 +515,51 @@ function makeMove() {
   document.getElementById("input").value = '';
 }
 
+let currentRiddle = null;
+
+const riddles = [
+  { question: "What walks on four legs in the morning, two in the afternoon, and three at night?", answer: "man" },
+  { question: "I speak without a mouth and hear without ears. What am I?", answer: "echo" },
+  { question: "The more of me you take, the more you leave behind. What am I?", answer: "footsteps" },
+  { question: "What has roots as nobody sees, is taller than trees, up, up it goes, and yet never grows?", answer: "mountain" }
+];
+
+function showRiddle() {
+  document.getElementById("input").focus();
+  
+  currentRiddle = riddles[Math.floor(Math.random() * riddles.length)];
+  awaitingRiddleAnswer = true;
+
+  setGameText(
+    `❓ You are out of arrows...\n\nA disembodied voice whispers:\n“${currentRiddle.question}”\n\nType your answer and press "Solve".`
+  );
+
+  const solveButton = document.getElementById("solve-button");
+  solveButton.style.display = "inline";
+  solveButton.onclick = checkRiddleAnswer;
+}
+
+function checkRiddleAnswer() {
+  const inputEl = document.getElementById("input");
+  const answer = inputEl.value.trim().toLowerCase();
+
+  if (answer === currentRiddle.answer.toLowerCase()) {
+    arrows = 1;
+    awaitingRiddleAnswer = false;
+    currentRiddle = null;
+    document.getElementById("solve-button").style.display = "none";
+    inputEl.value = '';
+    updateHUD();
+    setGameText("✅ The riddle has been solved.\nA magical arrow materializes in your quiver.");
+  } else {
+    setGameText("❌ The riddle answer is wrong.\nThe cave remains silent.\nYou cannot act again.");
+    awaitingRiddleAnswer = true; // permanently blocks further actions
+    document.getElementById("solve-button").style.display = "none";
+  }
+}
+
+
+
 
 function setGameText(text, end = false, callback = null) {
   const gameBox = document.getElementById("game");
@@ -534,6 +588,9 @@ function setGameText(text, end = false, callback = null) {
       updateHUD();
       document.getElementById("restart").style.display = 'none';
       describeRoom();
+
+      awaitingRiddleAnswer = false;
+currentRiddle = null;
     }
 
     function startGame() {
@@ -546,6 +603,8 @@ function setGameText(text, end = false, callback = null) {
         updateHUD();
         describeRoom();
       }, 800);
+
+  
     }
 
     async function addTrophy(name) {
