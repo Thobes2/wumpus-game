@@ -128,6 +128,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
 
+const imageAttack = "https://static.wixstatic.com/media/8eeb94_c6dd036757714e85861d06de5344762a~mv2.jpg"; // when Wumpus eats you
+const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe5ea60a8ff33f0c~mv2.jpg";   // when feast is celebrated
+
     
     // Supabase init should be outside DOMContentLoaded if you need it elsewhere
     const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
@@ -286,8 +289,6 @@ Object.values(roomDescriptions).forEach(desc => {
 
     const map = { 1:[2,5,8],2:[1,3,10],3:[2,4,12],4:[3,5,14],5:[1,4,6],6:[5,7,15],7:[6,8,17],8:[1,7,9],9:[8,10,18],10:[2,9,11],11:[10,12,19],12:[3,11,13],13:[12,14,20],14:[4,13,15],15:[6,14,16],16:[15,17,20],17:[7,16,18],18:[9,17,19],19:[11,18,20],20:[13,16,19] };
 
-    const imageLose = "https://static.wixstatic.com/media/8eeb94_faileddoomimage.jpg"; // replace with your 'eaten' image
-const imageWin = "https://static.wixstatic.com/media/8eeb94_victoryfeast.jpg";    // replace with your 'feast' image
 
 
     let player = 1;
@@ -365,14 +366,22 @@ const imageWin = "https://static.wixstatic.com/media/8eeb94_victoryfeast.jpg";  
         updateHUD();
         if (player === wumpus) {
   const imageEl = document.getElementById("room-image");
-  imageEl.src = imageLose;
-  imageEl.style.opacity = 0;
-  imageEl.style.display = "block";
+  imageEl.src = imageAttack;
+imageEl.style.opacity = 0;
+imageEl.style.display = "block";
 
+setTimeout(() => {
+  imageEl.style.opacity = 1;
+
+  // 💀 Dramatic pause before the attack text
   setTimeout(() => {
-    imageEl.style.opacity = 1;
     setGameText("You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!", true);
-  }, 50);
+  }, 300);
+}, 50);
+
+} else {
+  describeRoom();
+}
 }
         else describeRoom();
       } else {
@@ -395,13 +404,18 @@ const imageWin = "https://static.wixstatic.com/media/8eeb94_victoryfeast.jpg";  
       if (map[player].includes(targetRoom)) {
   if (targetRoom === wumpus) {
     const imageEl = document.getElementById("room-image");
-    imageEl.src = imageWin;
-    imageEl.style.opacity = 0;
-    imageEl.style.display = "block";
+    imageEl.src = imageFeast;
+imageEl.style.opacity = 0;
+imageEl.style.display = "block";
 
-    setTimeout(() => {
-      imageEl.style.opacity = 1;
-    }, 50);
+setTimeout(() => {
+  imageEl.style.opacity = 1;
+  
+  // 🎉 Bonus polish: slight delay before the victory feast text begins
+  setTimeout(() => {
+    setGameText(feastText, true);
+  }, 300);
+}, 50);
 
     const feastText = [
       "Your arrow whistles through the air and strikes true!",
@@ -423,7 +437,6 @@ const imageWin = "https://static.wixstatic.com/media/8eeb94_victoryfeast.jpg";  
       "(Click 'Restart Game' to hunt again.)"
     ].join('\n');
 
-    setGameText(feastText, true);
 
     setTimeout(() => {
       const input = document.createElement("input");
