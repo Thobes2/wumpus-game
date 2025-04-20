@@ -580,18 +580,22 @@ function setGameText(text, end = false, callback = null) {
   typeChar();
 }
 
-    function restartGame() {
-      player = 1;
-      wumpus = Math.floor(Math.random() * 20) + 1;
-      arrows = 3;
-      turns = 0;
-      updateHUD();
-      document.getElementById("restart").style.display = 'none';
-      describeRoom();
+function restartGame() {
+  console.log("🔄 Restarting game...");
 
-      awaitingRiddleAnswer = false;
-currentRiddle = null;
-    }
+  player = 1;
+  wumpus = Math.floor(Math.random() * 20) + 1;
+  arrows = 3;
+  turns = 0;
+  awaitingRiddleAnswer = false;
+  currentRiddle = null;
+
+  document.getElementById("restart").style.display = 'none';
+  document.getElementById("input").value = '';
+
+  updateHUD();
+  describeRoom();
+}
 
     function startGame() {
       document.getElementById("start-screen").style.display = "none";
