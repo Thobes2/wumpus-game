@@ -220,7 +220,7 @@ const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe
   },
 
   11: {
-    flavor: "a room with filled with eerie slience",
+    flavor: "a room filled with eerie slience",
     sense: "All you can hear is your breathing.",
     image: "https://static.wixstatic.com/media/8eeb94_6c180bb506d44c2eb680fd33b4152c2d~mv2.jpg"
   },
@@ -257,7 +257,7 @@ const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe
 
   17: {
     flavor: "a room with a single iron ball hanging from a string.",
-    sense: "The ball sways slihgtly but ominously.",
+    sense: "The ball sways slightly but ominously.",
     image: "https://static.wixstatic.com/media/8eeb94_abea8283a03244958bc24c0bd1a8a6a4~mv2.jpg"
   },
 
@@ -402,40 +402,41 @@ setTimeout(() => {
       updateHUD();
       if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
       if (map[player].includes(targetRoom)) {
-  if (targetRoom === wumpus) {
-    const imageEl = document.getElementById("room-image");
-    imageEl.src = imageFeast;
-imageEl.style.opacity = 0;
-imageEl.style.display = "block";
+        if (targetRoom === wumpus) {
+  const imageEl = document.getElementById("room-image");
+  imageEl.src = imageFeast;
+  imageEl.style.opacity = 0;
+  imageEl.style.display = "block";
 
-setTimeout(() => {
-  imageEl.style.opacity = 1;
-  
-  // 🎉 Bonus polish: slight delay before the victory feast text begins
+  const feastText = [
+    "Your arrow whistles through the air and strikes true!",
+    "A bone-shaking shriek echoes through the cavern... then silence.",
+    "The Wumpus lies still. You have survived.",
+    "",
+    "🔥 Torches blaze to life as hidden doors open...",
+    "🏺 Ancient murals glow with firelight.",
+    "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
+    "",
+    "Tonight, you feast.",
+    "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+    "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+    "",
+    "You have won the Wumpus Feast.",
+    "",
+    "Claim your Haiku Trophy Below ↓",
+    "",
+    "(Click 'Restart Game' to hunt again.)"
+  ].join('\n');
+
   setTimeout(() => {
-    setGameText(feastText, true);
-  }, 300);
-}, 50);
+    imageEl.style.opacity = 1;
+    setTimeout(() => {
+      setGameText(feastText, true);
+    }, 300);
+  }, 50);
 
-    const feastText = [
-      "Your arrow whistles through the air and strikes true!",
-      "A bone-shaking shriek echoes through the cavern... then silence.",
-      "The Wumpus lies still. You have survived.",
-      "",
-      "🔥 Torches blaze to life as hidden doors open...",
-      "🏺 Ancient murals glow with firelight.",
-      "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
-      "",
-      "Tonight, you feast.",
-      "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
-      "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
-      "",
-      "You have won the Wumpus Feast.",
-      "",
-      "Claim your Haiku Trophy Below ↓",
-      "",
-      "(Click 'Restart Game' to hunt again.)"
-    ].join('\n');
+
+    
 
 
     setTimeout(() => {
