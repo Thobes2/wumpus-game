@@ -85,6 +85,39 @@ p.subtitle {
   text-align: left;
 }
 
+.trophy-input {
+  height: 2.4em;
+  padding: 0.4em;
+  font-size: 1em;
+  margin-top: 1em;
+  margin-right: 0.5em;
+}
+
+.trophy-button {
+  height: 2.4em;
+  padding: 0.4em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 1em;
+  background-color: #111;
+  color: #ccc;
+  border: 2px solid #333;
+  font-family: 'UnifrakturCook', cursive;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.trophy-input,
+.trophy-button {
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.trophy-button:hover {
+  background-color: #222;
+  color: #fff;
+  border-color: #666;
+}
+
 #room-image-container img,
 #game,
 #hud {
@@ -483,12 +516,12 @@ function makeMove() {
 
       setTimeout(() => {
         const input = document.createElement("input");
-        input.placeholder = "Enter your name";
-        input.style.marginTop = "1em";
-        input.style.marginRight = "0.5em";
+input.placeholder = "Enter your name";
+input.className = "trophy-input";
 
-        const button = document.createElement("button");
-        button.textContent = "Claim Trophy";
+const button = document.createElement("button");
+button.textContent = "Claim Trophy";
+button.className = "trophy-button";
         button.onclick = () => {
           if (input.value.trim()) {
             addTrophy(input.value.trim());
