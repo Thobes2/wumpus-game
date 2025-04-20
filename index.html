@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe5ea60a8ff33f0c~mv2.jpg";
 
   const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // abbreviated for brevity
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o'; 
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const playButton = document.getElementById("play-button");
@@ -676,6 +676,8 @@ function restartGame() {
   ]);
 
   if (error) {
+    console.dir(error, { depth: null });
+
   console.error("❌ Supabase insert failed:", error);
   alert("Sorry, your trophy couldn't be saved. Try again later.");
   return;
