@@ -480,6 +480,24 @@ Object.values(roomDescriptions).forEach(desc => {
 }
 
 
+function makeMove() {
+  const inputVal = parseInt(document.getElementById("input").value.trim());
+  if (isNaN(inputVal)) {
+    appendNarrativeBlock({ text: "You stumble forward blindly. Choose a real room number." });
+    return;
+  }
+
+  if (!map[player].includes(inputVal)) {
+    appendNarrativeBlock({ text: `That tunnel doesn’t connect here. You can only go to: ${map[player].join(', ')}` });
+    return;
+  }
+
+  player = inputVal;
+  turns++;
+  updateHUD();
+  describeRoom();
+  document.getElementById("input").value = '';
+}
 
 
 function describeRoom() {
@@ -549,7 +567,10 @@ function describeRoom() {
 
       setTimeout(() => {
         imageEl.style.opacity = 1;
-        setTimeout(() => setGameText(feastText, true), 300);
+        setTimeout(() => {
+  appendNarrativeBlock({ text: feastText });
+  document.getElementById("restart").style.display = 'inline';
+}, 300);
       }, 50);
 
       setTimeout(() => {
