@@ -155,7 +155,7 @@ p.subtitle {
       <button id="go-button">Go</button>
       <button id="shoot-button">Shoot</button>
       <button id="solve-button" style="display:none;">Solve</button>
-      <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>      
+      <button id="restart" style="display:none;">Restart Game</button>   
       
     </div>
   </div>
@@ -174,8 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document.getElementById("go-button").addEventListener("click", makeMove);
-
   document.getElementById("shoot-button").addEventListener("click", shootArrow);
+  document.getElementById("restart").addEventListener("click", restartGame);
+
 
 
   const imageAttack = "https://static.wixstatic.com/media/8eeb94_c6dd036757714e85861d06de5344762a~mv2.jpg";
