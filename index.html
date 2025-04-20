@@ -74,9 +74,11 @@
   width: 100%;
   height: auto;
   max-height: 200px;
-  object-fit: cover;
+  object-fit: contain;
   transition: opacity 0.5s ease;
   opacity: 0;
+  display: block;
+  margin: 0 auto;
 }
   </style>
 </head>
@@ -283,7 +285,11 @@ Object.values(roomDescriptions).forEach(desc => {
 });
 
     const map = { 1:[2,5,8],2:[1,3,10],3:[2,4,12],4:[3,5,14],5:[1,4,6],6:[5,7,15],7:[6,8,17],8:[1,7,9],9:[8,10,18],10:[2,9,11],11:[10,12,19],12:[3,11,13],13:[12,14,20],14:[4,13,15],15:[6,14,16],16:[15,17,20],17:[7,16,18],18:[9,17,19],19:[11,18,20],20:[13,16,19] };
-    
+
+    const imageLose = "https://static.wixstatic.com/media/8eeb94_faileddoomimage.jpg"; // replace with your 'eaten' image
+const imageWin = "https://static.wixstatic.com/media/8eeb94_victoryfeast.jpg";    // replace with your 'feast' image
+
+
     let player = 1;
     let wumpus = Math.floor(Math.random() * 20) + 1;
     let arrows = 3;
@@ -357,7 +363,17 @@ Object.values(roomDescriptions).forEach(desc => {
         player = move;
         turns++;
         updateHUD();
-        if (player === wumpus) setGameText("You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!", true);
+        if (player === wumpus) {
+  const imageEl = document.getElementById("room-image");
+  imageEl.src = imageLose;
+  imageEl.style.opacity = 0;
+  imageEl.style.display = "block";
+
+  setTimeout(() => {
+    imageEl.style.opacity = 1;
+    setGameText("You step into the darkness... glowing eyes blink. A scream echoes. You were devoured by the Wumpus!", true);
+  }, 50);
+}
         else describeRoom();
       } else {
         setGameText(`A stone wall blocks your path.\nYou remain in room ${player}.\nTunnels lead to: ${validMoves.join(', ')}`);
@@ -377,52 +393,71 @@ Object.values(roomDescriptions).forEach(desc => {
       updateHUD();
       if (isNaN(targetRoom)) return setGameText("Your hand trembles. Aim at a real room, adventurer.");
       if (map[player].includes(targetRoom)) {
-        if (targetRoom === wumpus) {
-          const feastText = [
-            "Your arrow whistles through the air and strikes true!",
-            "A bone-shaking shriek echoes through the cavern... then silence.",
-            "The Wumpus lies still. You have survived.",
-            "",
-            "🔥 Torches blaze to life as hidden doors open...",
-            "🏺 Ancient murals glow with firelight.",
-            "🍖 Cavern dwellers emerges from the shadows, lifting you on their shoulders.",
-            "",
-            "Tonight, you feast.",
-            "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
-            "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
-            "",
-            "You have won the Wumpus Feast.",
-            "",
-            "Claim your Haiku Trophy Below ↓",
-            "",
-            "(Click 'Restart Game' to hunt again.)"
-          ].join('\n');
-          setGameText(feastText, true);
-          setTimeout(() => {
-  const input = document.createElement("input");
-  input.placeholder = "Enter your name";
-  input.style.marginTop = "1em";
-input.style.marginRight = "0.5em"; // Add horizontal spacing
+  if (targetRoom === wumpus) {
+    const imageEl = document.getElementById("room-image");
+    imageEl.src = imageWin;
+    imageEl.style.opacity = 0;
+    imageEl.style.display = "block";
 
-  const button = document.createElement("button");
-  button.textContent = "Claim Trophy";
-  button.onclick = () => {
-    if (input.value.trim()) {
-      addTrophy(input.value.trim());
-      input.remove();
-      button.remove();
-    }
+    setTimeout(() => {
+      imageEl.style.opacity = 1;
+    }, 50);
+
+    const feastText = [
+      "Your arrow whistles through the air and strikes true!",
+      "A bone-shaking shriek echoes through the cavern... then silence.",
+      "The Wumpus lies still. You have survived.",
+      "",
+      "🔥 Torches blaze to life as hidden doors open...",
+      "🏺 Ancient murals glow with firelight.",
+      "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
+      "",
+      "Tonight, you feast.",
+      "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+      "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+      "",
+      "You have won the Wumpus Feast.",
+      "",
+      "Claim your Haiku Trophy Below ↓",
+      "",
+      "(Click 'Restart Game' to hunt again.)"
+    ].join('\n');
+
+    setGameText(feastText, true);
+
+    setTimeout(() => {
+      const input = document.createElement("input");
+      input.placeholder = "Enter your name";
+      input.style.marginTop = "1em";
+      input.style.marginRight = "0.5em";
+
+      const button = document.createElement("button");
+      button.textContent = "Claim Trophy";
+      button.onclick = () => {
+        if (input.value.trim()) {
+          addTrophy(input.value.trim());
+          input.remove();
+          button.remove();
+        }
+      };
+
+      const trophyInputWrapper = document.createElement("div");
+      trophyInputWrapper.style.marginTop = "1em";
+      trophyInputWrapper.appendChild(input);
+      trophyInputWrapper.appendChild(button);
+
+      document.getElementById("game-wrapper").appendChild(trophyInputWrapper);
+    }, 2000);
+
+  } else {
+    describeRoom();
+  }
+} else {
+  setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
+}
   };
 
-  const trophyInputWrapper = document.createElement("div");
-trophyInputWrapper.style.marginTop = "1em";
 
-trophyInputWrapper.appendChild(input);
-trophyInputWrapper.appendChild(button);
-
-document.getElementById("game-wrapper").appendChild(trophyInputWrapper);
-
-}, 2000);
         } else describeRoom();
       } else {
         setGameText(`Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}`);
