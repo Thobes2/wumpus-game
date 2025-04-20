@@ -43,8 +43,9 @@ p.subtitle {
   border: 1px solid #ccc;
   overflow-y: auto;
   max-height: 70vh;
+}
 
-  .game-text p {
+.game-text p {
   margin: 1em 0;
   line-height: 1.6;
 }
@@ -57,8 +58,7 @@ p.subtitle {
   border-radius: 4px;
 }
 
-}
-    }
+  
     input, button {
       font-size: 1em;
       padding: 0.4em;
@@ -540,64 +540,56 @@ function describeRoom() {
 
   if (map[player].includes(targetRoom)) {
     if (targetRoom === wumpus) {
-      const imageEl = document.getElementById("room-image");
-      imageEl.src = imageFeast;
-      imageEl.style.opacity = 0;
-      imageEl.style.display = "block";
+  const feastText = [
+    "Your arrow whistles through the air and strikes true!",
+    "A bone-shaking shriek echoes through the cavern... then silence.",
+    "The Wumpus lies still. You have survived.",
+    "",
+    "🔥 Torches blaze to life as hidden doors open...",
+    "🏺 Ancient murals glow with firelight.",
+    "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
+    "",
+    "Tonight, you feast.",
+    "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+    "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+    "",
+    "You have won the Wumpus Feast.",
+    "",
+    "Claim your Haiku Trophy Below ↓",
+    "",
+    "(Click 'Restart Game' to hunt again.)"
+  ].join('\n');
 
-      const feastText = [
-        "Your arrow whistles through the air and strikes true!",
-        "A bone-shaking shriek echoes through the cavern... then silence.",
-        "The Wumpus lies still. You have survived.",
-        "",
-        "🔥 Torches blaze to life as hidden doors open...",
-        "🏺 Ancient murals glow with firelight.",
-        "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
-        "",
-        "Tonight, you feast.",
-        "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
-        "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
-        "",
-        "You have won the Wumpus Feast.",
-        "",
-        "Claim your Haiku Trophy Below ↓",
-        "",
-        "(Click 'Restart Game' to hunt again.)"
-      ].join('\n');
+  appendNarrativeBlock({ image: imageFeast, text: feastText });
 
-      setTimeout(() => {
-        imageEl.style.opacity = 1;
-        setTimeout(() => {
-  appendNarrativeBlock({ text: feastText });
-  document.getElementById("restart").style.display = 'inline';
-}, 300);
-      }, 50);
+  setTimeout(() => {
+    document.getElementById("restart").style.display = 'inline';
 
-      setTimeout(() => {
-        const input = document.createElement("input");
-input.placeholder = "Enter your name";
-input.className = "trophy-input";
+    const input = document.createElement("input");
+    input.placeholder = "Enter your name";
+    input.className = "trophy-input";
 
-const button = document.createElement("button");
-button.textContent = "Claim Trophy";
-button.className = "trophy-button";
+    const button = document.createElement("button");
+    button.textContent = "Claim Trophy";
+    button.className = "trophy-button";
 
-button.onclick = () => {
-  const name = input.value.trim();
-  if (name) {
-    addTrophy(name);
-    input.remove();
-    button.remove();
-  }
-};
+    button.onclick = () => {
+      const name = input.value.trim();
+      if (name) {
+        addTrophy(name);
+        input.remove();
+        button.remove();
+      }
+    };
 
-        const trophyInputWrapper = document.createElement("div");
-        trophyInputWrapper.style.marginTop = "1em";
-        trophyInputWrapper.appendChild(input);
-        trophyInputWrapper.appendChild(button);
+    const wrapper = document.createElement("div");
+    wrapper.style.marginTop = "1em";
+    wrapper.appendChild(input);
+    wrapper.appendChild(button);
+    document.getElementById("game-wrapper").appendChild(wrapper);
 
-        document.getElementById("game-wrapper").appendChild(trophyInputWrapper);
-      }, 2000);
+  }, 2000);
+}
 
     } else {
       describeRoom();
