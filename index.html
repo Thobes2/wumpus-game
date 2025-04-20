@@ -126,40 +126,35 @@
   <div id="trophies"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🎮 DOM fully loaded");
 
-const imageAttack = "https://static.wixstatic.com/media/8eeb94_c6dd036757714e85861d06de5344762a~mv2.jpg"; // when Wumpus eats you
-const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe5ea60a8ff33f0c~mv2.jpg";   // when feast is celebrated
+  const imageAttack = "https://static.wixstatic.com/media/8eeb94_c6dd036757714e85861d06de5344762a~mv2.jpg";
+  const imageFeast = "https://static.wixstatic.com/media/8eeb94_15a619f1b4c44c1cbe5ea60a8ff33f0c~mv2.jpg";
 
-    
-    // Supabase init should be outside DOMContentLoaded if you need it elsewhere
-    const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  
-    // Only DOM interaction needs to wait for the DOM
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log("📦 DOM fully loaded");
-  
-      const playButton = document.getElementById("play-button");
-      if (playButton) {
-        console.log("✅ Play button found");
-        playButton.addEventListener("click", () => {
-  console.log("🟢 Play button clicked");
+  const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // abbreviated for brevity
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  document.getElementById("start-screen").style.display = "none";
-  document.getElementById("rules").style.display = "none";
-
-  document.getElementById("game-wrapper").style.display = "block";
-  updateHUD();
-  describeRoom();
-  document.getElementById("input").focus();
-});
-      } else {
-        console.error("❌ #play-button not found in DOM.");
-      }
+  const playButton = document.getElementById("play-button");
+  if (playButton) {
+    playButton.addEventListener("click", () => {
+      console.log("🟢 Play button clicked");
+      document.getElementById("start-screen").style.display = "none";
+      document.getElementById("rules").classList.add("hidden");
+      setTimeout(() => {
+        document.getElementById("rules").style.display = "none";
+        document.getElementById("game-wrapper").style.display = "block";
+        updateHUD();
+        describeRoom();
+        document.getElementById("input").focus();
+      }, 800);
     });
-    
+  } else {
+    console.error("❌ #play-button not found in DOM.");
+  }
+
     const roomDescriptions = {
   1: {
     flavor: "a narrow stone room",
@@ -676,10 +671,12 @@ function setGameText(text, end = false, callback = null) {
   if (trophySection) trophySection.appendChild(div);
 }
 
+});
 
 
 
 </script>
+
  
 </body>
 </html>
