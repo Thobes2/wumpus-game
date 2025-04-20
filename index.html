@@ -17,6 +17,15 @@
       font-size: 3em;
       margin-bottom: 0.2em;
     }
+
+    h1 {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+p.subtitle {
+  margin: 0 0 1.5em 0;
+}
+
     #rune-sequence {
       font-family: 'UnifrakturCook', cursive;
       margin-left: 0.5em;
@@ -70,10 +79,19 @@
       
     }
 
-    #room-image-container, #game {
+    #main-container {
   max-width: 600px;
   margin: 0 auto;
+  text-align: left;
 }
+
+#room-image-container img,
+#game,
+#hud {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 #room-image {
   width: 100%;
@@ -83,14 +101,30 @@
   object-fit: contain;
 }
 
+#game-wrapper > div:last-child {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1em;
+  flex-wrap: wrap;
+}
+#game-wrapper input[type="text"] {
+  flex: 1 1 auto;
+  min-width: 100px;
+}
+#game-wrapper button {
+  flex: 0 0 auto;
+}
+
   </style>
 </head>
 <body>
- 
+  <div id="main-container">
+
 
   <h1>Hunt the Wumpus <span id="rune-sequence"></span></h1>
   <p style="text-align: left; font-style: italic; font-size: 1.2em; margin-top: -0.5em;">
-    And Win a Personalized Victory Haiku
+    <p class="subtitle">And Win a Personalized Victory Haiku</p>
+
   </p>
   <div id="rules">
     <p><strong>The Wumpus</strong> is a subterranean beast as majestic as it is mysterious.</p>
@@ -125,6 +159,8 @@
       <button id="restart" onclick="restartGame()" style="display:none;">Restart Game</button>
     </div>
   </div>
+
+</div> 
 
   <div id="trophies"></div>
 
