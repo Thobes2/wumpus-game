@@ -69,6 +69,15 @@
       border-color: #666;
       
     }
+
+    #room-image {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
   </style>
 </head>
 <body>
@@ -94,6 +103,11 @@
   </div>
 
   <div id="game-wrapper" style="display: none;">
+
+    <div id="room-image-container" style="text-align:center; margin-bottom: 1em;">
+      <img id="room-image" src="">
+    </div>
+
     <pre id="game"></pre>
     <div id="hud" style="margin-top: 0.5em; font-family: monospace;">
       Room: <span id="hud-room">1</span> | Arrows: <span id="hud-arrows">3</span> | Turns: <span id="hud-turns">0</span>
@@ -111,6 +125,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
+
+    
     // Supabase init should be outside DOMContentLoaded if you need it elsewhere
     const SUPABASE_URL = 'https://vsvxlukemvzhdjfjfprc.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdnhsdWtlbXZ6aGRqZmpmcHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMTQyNDUsImV4cCI6MjA1OTg5MDI0NX0.SGZHFyRfyzbHklaLR2jsTL6UsQzwhe7KoC78EqAn6_o';
@@ -134,18 +150,143 @@
   document.getElementById("game-wrapper").style.display = "block";
   updateHUD();
   describeRoom();
+  const imageEl = document.getElementById("room-image");
+if (roomImages[player]) {
+  imageEl.src = roomImages[player];
+  imageEl.style.display = "block";
+} else {
+  imageEl.style.display = "none"; // fallback if no image
+}
   document.getElementById("input").focus();
 });
       } else {
         console.error("❌ #play-button not found in DOM.");
       }
     });
+    
+    const roomDescriptions = {
+  1: {
+    flavor: "a narrow stone room",
+    sense: "The air is cold and still.",
+    image: "https://static.wixstatic.com/media/8eeb94_26998e23558340f6adc283b985039735~mv2.jpg"
+  },
+  2: {
+    flavor: "a flooded passageway",
+    sense: "You worry about where the water might be getting too deep.",
+    image: "https://static.wixstatic.com/media/8eeb94_29f5d286412c4e429968ef15cc442507~mv2.jpg"
+  },
+  3: {
+    flavor: "a dome-shaped vault with crumbling walls",
+    sense: "The ground crunches under your feet.",
+    image: "https://static.wixstatic.com/media/8eeb94_1e1b292368cb4a8aaf0aa2cf196b8a6c~mv2.jpg"
+  },
 
+  4: {
+    flavor: "a low-ceilinged tunnel",
+    sense: "A breeze brushes your cheek.",
+    image: "https://static.wixstatic.com/media/8eeb94_adbf74e8aa35465790efb21132cfea15~mv2.jpg"
+  },
+
+  5: {
+    flavor: "a room etched with mysterious runes ᛤ",
+    sense: "You feel eyes watching from the dark.",
+    image: "https://static.wixstatic.com/media/8eeb94_91ee8576b50242489235e5f4657d52fa~mv2.jpg"
+  },
+
+  6: {
+    flavor: "a cavern that smells of sulfur.",
+    sense: "Your eyes burn from the acid in the air.",
+    image: "https://static.wixstatic.com/media/8eeb94_0ba21d2f36214af1845017c881826783~mv2.jpg"
+  },
+
+  7: {
+    flavor: "a torchlit hallway with dripping walls",
+    sense: "A deep coldness sets into your bones.",
+    image: "https://static.wixstatic.com/media/8eeb94_440477f0cf414ac89b97c3c62f4c5afc~mv2.jpg"
+  },
+
+  8: {
+    flavor: "a room littered with bones",
+    sense: "Empty eye sockets of ill-fated Wumpus hunters seem to follow your every move.",
+    image: "https://static.wixstatic.com/media/8eeb94_61e78bbe67b14386b3b9ca7576ec2ca9~mv2.jpg"
+  },
+
+  9: {
+    flavor: "a room studded in gleaming crystals",
+    sense: "You feel hypnotized and want to sit down but know you must keep going.",
+    image: "https://static.wixstatic.com/media/8eeb94_2b3a3a89246e43b597b06b22eed8d4a7~mv2.jpg"
+  },
+
+  10: {
+    flavor: "a room with water quickly puddling on the floor",
+    sense: "You stand on your toes to avoid getting a soaker.",
+    image: "https://static.wixstatic.com/media/8eeb94_684a7f8ed951483c91bb06c3b4f0a6cb~mv2.jpg"
+  },
+
+  11: {
+    flavor: "a room with filled with eerie slience",
+    sense: "All you can hear is your breathing.",
+    image: "https://static.wixstatic.com/media/8eeb94_6c180bb506d44c2eb680fd33b4152c2d~mv2.jpg"
+  },
+
+  12: {
+    flavor: "a room bathed in the light from a golden crevace",
+    sense: "A faint glimmer of hope shimmers then is snuffed out.",
+    image: "https://static.wixstatic.com/media/8eeb94_e4a8fc6dfb794531b6191db0e7899a01~mv2.jpg"
+  },
+
+  13: {
+    flavor: "a room with an arch bathed in the glow of your torch.",
+    sense: "You think about family back home and whether you will ever see them again.",
+    image: "https://static.wixstatic.com/media/8eeb94_fe14c2694d9f45209caaeed639bcb195~mv2.jpg"
+  },
+
+  14: {
+    flavor: "a room filled with demonic statues.",
+    sense: "You want to look away but you can't.",
+    image: "https://static.wixstatic.com/media/8eeb94_2839af7de6c5475d833b9f6bb31fe691~mv2.jpg"
+  },
+
+  15: {
+    flavor: "a room covered with blood smeared across the walls.",
+    sense: "You wonder why the blood is glistening fresh.",
+    image: "https://static.wixstatic.com/media/8eeb94_edfaf1b8f75648f5afc08f639aca58b8~mv2.jpg"
+  },
+
+  16: {
+    flavor: "a room alive with florescent underground plants.",
+    sense: "Your hand burns as it grazes one of the leaves.",
+    image: "https://static.wixstatic.com/media/8eeb94_ccbced67ce5643c6a40b7a493e3eb1c9~mv2.jpg"
+  },
+
+  17: {
+    flavor: "a room with a single iron ball hanging from a string.",
+    sense: "The ball sways slihgtly but ominously.",
+    image: "https://static.wixstatic.com/media/8eeb94_abea8283a03244958bc24c0bd1a8a6a4~mv2.jpg"
+  },
+
+  18: {
+    flavor: "a room wrapped in liquid chrome.",
+    sense: "You shield your eyes from the light.",
+    image: "https://static.wixstatic.com/media/8eeb94_00967c5463ed463da8ff023d70ffa743~mv2.jpg"
+  },
+
+  19: {
+    flavor: "a room blocked by a bed of spikes.",
+    sense: "You tiptoe carefully in between the impalers.",
+    image: "https://static.wixstatic.com/media/8eeb94_384154116cb940ba8c27a04d48e0f533~mv2.jpg"
+  },
+
+  20: {
+    flavor: "a room with a wall covered in ancient scrolls.",
+    sense: "You consider the difference between wisdom and survival.",
+    image: "https://static.wixstatic.com/media/8eeb94_b6a05578fc804a61b96baad13a975f1e~mv2.jpg"
+  },
+
+};
 
     const map = { 1:[2,5,8],2:[1,3,10],3:[2,4,12],4:[3,5,14],5:[1,4,6],6:[5,7,15],7:[6,8,17],8:[1,7,9],9:[8,10,18],10:[2,9,11],11:[10,12,19],12:[3,11,13],13:[12,14,20],14:[4,13,15],15:[6,14,16],16:[15,17,20],17:[7,16,18],18:[9,17,19],19:[11,18,20],20:[13,16,19] };
-    const roomAdjectives = ["a narrow stone room","a flooded passageway","a dome-shaped vault with crumbling walls","a low-ceilinged tunnel","a room etched with mysterious runes ᛤ","a cavern that smells of sulfur","a torchlit hallway with dripping walls","a room littered with bones","a vaulted corridor echoing your footsteps","a room cloaked in eerie silence"];
-    const sensoryHints = ["The air is cold and still.","You hear distant dripping water.","The ground crunches under your feet.","A breeze brushes your cheek.","You feel eyes watching from the dark.","A musty odor fills the air.","You nearly trip over a broken helmet.","There’s a strange warmth in the stone.","You taste iron in the air.","Your torch flickers for a moment."];
-
+    
     let player = 1;
     let wumpus = Math.floor(Math.random() * 20) + 1;
     let arrows = 3;
@@ -173,13 +314,41 @@
     }
 
     function describeRoom() {
-      const flavor = roomAdjectives[Math.floor(Math.random() * roomAdjectives.length)];
-      const sense = sensoryHints[Math.floor(Math.random() * sensoryHints.length)];
-      const output = [`You step into ${flavor}.`, sense, `Tunnels stretch out toward rooms ${map[player].join(', ')}.`];
-      if (map[player].includes(wumpus)) output.push("A foul stench creeps through the stone... the Wumpus is near.");
-      setGameText(output.join('\n'));
+      const desc = roomDescriptions[player];
+  const flavor = desc.flavor;
+  const sense = desc.sense;
+  const image = desc.image;
 
-    }
+  const output = [
+    `You step into ${flavor}.`,
+    sense,
+    `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
+  ];
+
+  if (map[player].includes(wumpus)) {
+    output.push("A foul stench creeps through the stone... the Wumpus is near.");
+  }
+
+  const imageEl = document.getElementById("room-image");
+
+  if (image) {
+    imageEl.style.opacity = 0;
+    imageEl.src = image;
+    imageEl.style.display = "block";
+
+    setTimeout(() => {
+      imageEl.style.opacity = 1;
+
+      // 🎬 Delay narration until image fades in
+      setTimeout(() => {
+        setGameText(output.join('\n'));
+      }, 300); // ← You can increase this if you want a longer pause
+    }, 50);
+  } else {
+    imageEl.style.display = "none";
+    setGameText(output.join('\n')); // no delay if no image
+  
+}
 
     function makeMove() {
       
@@ -461,6 +630,7 @@ function setGameText(text, end = false, callback = null) {
   const trophySection = document.getElementById("trophies");
   if (trophySection) trophySection.appendChild(div);
 }
+
 
 
 
