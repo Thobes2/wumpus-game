@@ -658,6 +658,12 @@ function restartGame() {
   document.getElementById("restart").style.display = 'none';
   document.getElementById("input").value = '';
 
+  // 🧹 Remove old trophy
+  const trophyWrapper = document.getElementById("trophy-wrapper");
+  if (trophyWrapper) {
+    trophyWrapper.remove();
+  }
+
   updateHUD();
   describeRoom();
 }
