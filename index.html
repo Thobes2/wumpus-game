@@ -657,9 +657,17 @@ function restartGame() {
 
   const h = haikus[Math.floor(Math.random() * haikus.length)];
 
+  console.log("🏹 Attempting to insert trophy with data:", {
+  player_name: name,
+  line1: h[0],
+  line2: h[1],
+  line3: h[2]
+});
+  
   // Save to Supabase
   const { data, error } = await supabaseClient.from('trophies').insert([
     {
+
       player_name: name,
       line1: h[0],
       line2: h[1],
@@ -668,12 +676,12 @@ function restartGame() {
   ]);
 
   if (error) {
-    console.error("❌ Supabase insert failed:", error);
-    alert("Sorry, your trophy couldn't be saved. Try again later.");
-    return;
-  }
+  console.error("❌ Supabase insert failed:", error);
+  alert("Sorry, your trophy couldn't be saved. Try again later.");
+  return;
+}
 
-  console.log("✅ Trophy saved to Supabase:", data);
+console.log("✅ Trophy saved to Supabase:", data);
 
   // Display trophy on screen
   const div = document.createElement("div");
