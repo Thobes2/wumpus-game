@@ -85,12 +85,39 @@ p.subtitle {
   text-align: left;
 }
 
+.trophy {
+  background-color: #333;
+  color: white;
+  border: 2px solid black;
+  font-size: 0.75em;
+  line-height: 1.3;
+  font-family: Georgia, serif;
+  padding: 1em;
+  width: 100%;
+  max-width: 240px;
+  height: 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1em;
+}
 .trophy-input {
   height: 2.4em;
   padding: 0.4em;
   font-size: 1em;
   margin-top: 1em;
   margin-right: 0.5em;
+}
+
+#trophy-wrapper {
+  margin-top: 2em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .trophy-button {
@@ -752,8 +779,21 @@ console.log("✅ Trophy saved to Supabase:", data);
     </div>
   `;
 
-  const trophySection = document.getElementById("trophies");
-  if (trophySection) trophySection.appendChild(div);
+  let wrapper = document.getElementById("trophy-wrapper");
+
+if (!wrapper) {
+  wrapper = document.createElement("div");
+  wrapper.id = "trophy-wrapper";
+  wrapper.style.maxWidth = "600px";
+  wrapper.style.margin = "2em auto 0 auto";
+  wrapper.style.display = "flex";
+  wrapper.style.justifyContent = "center";
+  wrapper.style.alignItems = "center";
+  wrapper.style.flexWrap = "wrap";
+  document.getElementById("game-wrapper").appendChild(wrapper);
+}
+
+wrapper.appendChild(div);
 }
 
 });
