@@ -509,7 +509,14 @@ if (!wrapper) {
   document.getElementById("game-wrapper").appendChild(wrapper);
 }
 
+let currentRiddle = null;
 
+const riddles = [
+  { question: "What walks on four legs in the morning, two in the afternoon, and three at night?", answer: "man" },
+  { question: "I speak without a mouth and hear without ears. What am I?", answer: "echo" },
+  { question: "The more of me you take, the more you leave behind. What am I?", answer: "footsteps" },
+  { question: "What has roots as nobody sees, is taller than trees, up, up it goes, and yet never grows?", answer: "mountain" }
+];
 
 
 function showRiddle() {
@@ -543,6 +550,9 @@ function checkRiddleAnswer() {
     document.getElementById("solve-button").style.display = "none";
   }
 }
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
