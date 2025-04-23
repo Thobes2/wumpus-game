@@ -248,7 +248,9 @@ function makeMove() {
 }
 
 function shootArrow() {
-  if (awaitingRiddleAnswer) return appendNarrativeBlock({ text: "Solve the riddle first or refresh to begin again."});
+  if (awaitingRiddleAnswer) {
+    return appendNarrativeBlock({ text: "Solve the riddle first or refresh to begin again." });
+  }
 
   if (arrows <= 0) return showRiddle();
 
@@ -263,97 +265,63 @@ function shootArrow() {
 
   if (map[player].includes(targetRoom)) {
     if (targetRoom === wumpus) {
-  const feastText = [
-    "Your arrow whistles through the air and strikes true!",
-    "A bone-shaking shriek echoes through the cavern... then silence.",
-    "The Wumpus lies still. You have survived.",
-    "",
-    "🔥 Torches blaze to life as hidden doors open...",
-    "🏺 Ancient murals glow with firelight.",
-    "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
-    "",
-    "Tonight, you feast.",
-    "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
-    "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
-    "",
-    "You have won the Wumpus Feast.",
-    "",
-    "Claim your Haiku Trophy Below ↓",
-    "",
-    "(Click 'Restart Game' to hunt again.)"
-  ].join('\n');
+      const feastText = [
+        "Your arrow whistles through the air and strikes true!",
+        "A bone-shaking shriek echoes through the cavern... then silence.",
+        "The Wumpus lies still. You have survived.",
+        "",
+        "🔥 Torches blaze to life as hidden doors open...",
+        "🏺 Ancient murals glow with firelight.",
+        "🍖 Cavern dwellers emerge from the shadows, lifting you on their shoulders.",
+        "",
+        "Tonight, you feast.",
+        "🥘 A grand banquet is held in your honor: roasted Wumpus, steaming cavebread, and fermented batwine.",
+        "🗡️ You are crowned Hunter of the Hollow. A legend reborn.",
+        "",
+        "You have won the Wumpus Feast.",
+        "",
+        "Claim your Haiku Trophy Below ↓",
+        "",
+        "(Click 'Restart Game' to hunt again.)"
+      ].join('\n');
 
-  appendNarrativeBlock({ image: imageFeast, text: feastText });
+      appendNarrativeBlock({ image: imageFeast, text: feastText });
 
-  setTimeout(() => {
-    document.getElementById("restart").style.display = 'inline';
+      setTimeout(() => {
+        document.getElementById("restart").style.display = 'inline';
 
-    const input = document.createElement("input");
-    input.placeholder = "Enter your name";
-    input.className = "trophy-input";
+        const input = document.createElement("input");
+        input.placeholder = "Enter your name";
+        input.className = "trophy-input";
 
-    const button = document.createElement("button");
-    button.textContent = "Claim Trophy";
-    button.className = "trophy-button";
+        const button = document.createElement("button");
+        button.textContent = "Claim Trophy";
+        button.className = "trophy-button";
 
-    button.onclick = () => {
-      const name = input.value.trim();
-      if (name) {
-        addTrophy(name);
-        input.remove();
-        button.remove();
-      }
-    };
+        button.onclick = () => {
+          const name = input.value.trim();
+          if (name) {
+            addTrophy(name);
+            input.remove();
+            button.remove();
+          }
+        };
 
-    const wrapper = document.createElement("div");
-    wrapper.style.marginTop = "1em";
-    wrapper.appendChild(input);
-    wrapper.appendChild(button);
-    document.getElementById("game-wrapper").appendChild(wrapper);
+        const wrapper = document.createElement("div");
+        wrapper.style.marginTop = "1em";
+        wrapper.appendChild(input);
+        wrapper.appendChild(button);
+        document.getElementById("game-wrapper").appendChild(wrapper);
 
-  }, 2000);
-}
-
+      }, 2000);
     } else {
       describeRoom();
     }
-
   } else {
     appendNarrativeBlock({ text: `Your shot ricochets off stone.\nFrom room ${player}, your bow can only reach: ${map[player].join(', ')}` });
   }
 
   document.getElementById("input").value = '';
-}
-
-let currentRiddle = null;
-
-const riddles = [
-  { question: "What walks on four legs in the morning, two in the afternoon, and three at night?", answer: "man" },
-  { question: "I speak without a mouth and hear without ears. What am I?", answer: "echo" },
-  { question: "The more of me you take, the more you leave behind. What am I?", answer: "footsteps" },
-  { question: "What has roots as nobody sees, is taller than trees, up, up it goes, and yet never grows?", answer: "mountain" }
-];
-
-function describeRoom() {
-  const desc = roomDescriptions[player];
-  const flavor = desc.flavor;
-  const sense = desc.sense;
-  const image = desc.image;
-
-  const text = [
-    `You step into ${flavor}.`,
-    sense,
-    `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
-  ];
-
-  if (map[player].includes(wumpus)) {
-    text.push("A foul stench creeps through the stone... the Wumpus is near.");
-  }
-
-  appendNarrativeBlock({
-    image: image || null,
-    text: text.join("\n")
-  });
 }
 
 
