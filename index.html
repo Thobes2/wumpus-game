@@ -13,15 +13,11 @@
       margin: auto;
     }
     h1 {
-      font-family: 'UnifrakturCook', cursive;
-      font-size: 3em;
-      margin-bottom: 0.2em;
-    }
-
-    h1 {
-  margin-top: 0;
-  margin-bottom: 0.25em;
+  font-family: 'UnifrakturCook', cursive;
+  font-size: 3em;
+  margin: 0 0 0.25em 0;
 }
+
 p.subtitle {
   margin: 0 0 1.5em 0;
 }
@@ -45,18 +41,6 @@ p.subtitle {
   max-height: 70vh;
 }
 
-.game-text p {
-  margin: 1em 0;
-  line-height: 1.6;
-}
-
-.game-text img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 1.5em 0;
-  border-radius: 4px;
-}
   
     input, button {
       font-size: 1em;
@@ -414,8 +398,10 @@ Object.values(roomDescriptions).forEach(desc => {
 
 
     let player = 1;
-    let wumpus = Math.floor(Math.random() * 20) + 1;
-    let arrows = 3;
+    let wumpus;
+do {
+  wumpus = Math.floor(Math.random() * 20) + 1;
+} while (wumpus === player);    let arrows = 3;
     let turns = 0;
 
     const runeOptions = ["ᛉ", "ᚠ", "ᛃ", "ᚦ", "†", "☌", "ᛏ", "Ϟ", "ᛥ"];
@@ -474,8 +460,11 @@ Object.values(roomDescriptions).forEach(desc => {
   stream.appendChild(wrapper);
 
   setTimeout(() => {
-    stream.scrollTop = stream.scrollHeight;
-  }, 50);
+  stream.scrollTo({
+    top: stream.scrollHeight,
+    behavior: 'smooth'
+  });
+}, 100);
 }
 
 
@@ -647,8 +636,9 @@ function restartGame() {
   console.log("🔄 Restarting game...");
 
   player = 1;
+  do {
   wumpus = Math.floor(Math.random() * 20) + 1;
-  arrows = 3;
+} while (wumpus === player);  arrows = 3;
   turns = 0;
   awaitingRiddleAnswer = false;
   currentRiddle = null;
