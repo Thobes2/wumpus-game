@@ -324,6 +324,34 @@ function shootArrow() {
   document.getElementById("input").value = '';
 }
 
+function describeRoom() {
+  const desc = roomDescriptions[player];
+  if (!desc) {
+    console.error(`No description found for room ${player}`);
+    return;
+  }
+
+  const flavor = desc.flavor;
+  const sense = desc.sense;
+  const image = desc.image;
+
+  const text = [
+    `You step into ${flavor}.`,
+    sense,
+    `Tunnels stretch out toward rooms ${map[player].join(', ')}.`
+  ];
+
+  if (map[player].includes(wumpus)) {
+    text.push("A foul stench creeps through the stone... the Wumpus is near.");
+  }
+
+  appendNarrativeBlock({
+    image: image || null,
+    text: text.join("\n")
+  });
+}
+
+
 
 function restartGame() {
   console.log("🔄 Restarting game...");
